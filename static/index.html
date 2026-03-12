@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Inbox | BlinkMail</title>
+    <title>BlinkMail | Advanced Temp Email</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-
     <div class="top-navbar">
         <div class="brand-logo">
             <span class="brand-icon"><i class="fa-solid fa-envelope-circle-check"></i></span>
@@ -17,36 +16,13 @@
         <a href="https://t.me/Snehasiskhan" target="_blank" class="contact-btn">Contact Us</a>
     </div>
 
-    <div class="inbox-wrapper">
-        <div class="action-grid">
-            <button class="action-btn" id="copyBtn" onclick="copyEmail(event)">
-                <i class="fa-regular fa-copy"></i> Copy
-            </button>
-            <button class="action-btn" onclick="fetchEmails(event)">
-                <i class="fa-solid fa-arrow-rotate-right"></i> Refresh
-            </button>
-            <button class="action-btn" onclick="goToHome(event)">
-                <i class="fa-regular fa-pen-to-square"></i> Change
-            </button>
-            <button class="action-btn" onclick="goToHome(event)">
-                <i class="fa-solid fa-xmark"></i> Delete
-            </button>
-        </div>
-
-        <div class="inbox-box">
-            <div class="inbox-title">
-                INBOX <span class="email-badge" id="current-email-display">Loading...</span>
-            </div>
-            <div class="inbox-body" id="message-list">
-                </div>
+    <div class="home-wrapper">
+        <div class="home-hero">
+            <h1>Blink<span>Mail</span></h1>
+            <p>The most advanced, secure, and seamless disposable email engine. Keep your real mailbox clean and instantly intercept incoming verification codes.</p>
+            <button id="generateBtn" class="btn-premium" onclick="generateAndRedirect()">Get Your Free Email <i class="fa-solid fa-bolt" style="margin-left: 8px;"></i></button>
         </div>
     </div>
-
-    <div class="seo-article">
-        <h2>What is Disposable Temporary E-mail?</h2>
-        <p><b>Disposable email</b> - is a free email service that allows to receive email at a temporary address that self-destructs after a certain time elapses. It is also known by names like: tempmail, 10minutemail, 10minmail, throwaway email, fake-mail, fake email generator, burner mail or trash-mail. Many forums, Wi-Fi owners, websites and blogs ask visitors to register before they can view content, post comments or download something. BlinkMail - is the most advanced throwaway email service that helps you avoid spam and stay safe.</p>
-    </div>
-
     <script src="/static/script.js"></script>
 </body>
 </html>
