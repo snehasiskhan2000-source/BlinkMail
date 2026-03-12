@@ -2,9 +2,22 @@ function preventReload(e) {
     if (e) e.preventDefault();
 }
 
-function goToHome(e) {
+// Seamlessly generate a new email and stay in the inbox app!
+async function changeEmail(e) {
     preventReload(e);
-    window.location.href = '/';
+    const btn = e.currentTarget;
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Generating...';
+    
+    try {
+        const response = await fetch('/api/generate');
+        const data = await response.json();
+        // Redirect seamlessly to the new inbox
+        window.location.href = `/inbox/${data.email}`;
+    } catch (error) {
+        btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Error';
+        setTimeout(() => { btn.innerHTML = originalHTML; }, 2000);
+    }
 }
 
 async function generateAndRedirect() {
@@ -22,8 +35,6 @@ async function generateAndRedirect() {
 
 function copyEmail(e) {
     preventReload(e);
-    
-    // Copy from the new widget input box
     const emailInput = document.getElementById('current-email-input');
     if(!emailInput) return;
     
@@ -31,7 +42,6 @@ function copyEmail(e) {
     emailInput.setSelectionRange(0, 99999); 
     navigator.clipboard.writeText(emailInput.value);
     
-    // Animate the Green Widget Button
     const widgetBtn = document.getElementById('widgetCopyBtn');
     if(widgetBtn) {
         const originalHTML = widgetBtn.innerHTML;
@@ -39,7 +49,6 @@ function copyEmail(e) {
         setTimeout(() => { widgetBtn.innerHTML = originalHTML; }, 2000);
     }
 
-    // Animate the Dim Grid Button
     const gridBtn = document.getElementById('copyBtn');
     if(gridBtn) {
         gridBtn.innerHTML = '<i class="fa-solid fa-check" style="color: var(--neon-blue);"></i> Copied!';
@@ -53,6 +62,33 @@ function copyEmail(e) {
     }
 }
 
+// QR CODE LOGIC
+function showQR(e) {
+    preventReload(e);
+    const emailInput = document.getElementById('current-email-input');
+    if(!emailInput || !emailInput.value) return;
+    
+    const qrImg = document.getElementById('qrImage');
+    // Call external API to generate a working QR code instantly
+    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=mailto:${emailInput.value}`;
+    
+    const modal = document.getElementById('qrModal');
+    modal.classList.add('show');
+}
+
+function closeQR() {
+    const modal = document.getElementById('qrModal');
+    modal.classList.remove('show');
+}
+
+// Close QR when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('qrModal');
+    if (event.target === modal) {
+        closeQR();
+    }
+}
+
 async function fetchEmails(e) {
     preventReload(e);
     const urlParts = window.location.pathname.split('/');
@@ -60,7 +96,6 @@ async function fetchEmails(e) {
     
     if(!emailAddress || !emailAddress.includes('@')) return;
     
-    // Update both displays
     const badgeElement = document.getElementById('current-email-display');
     if(badgeElement) badgeElement.innerText = emailAddress;
     
