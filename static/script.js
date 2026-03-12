@@ -1,4 +1,3 @@
-// This function STOPS the page from reloading when you click a button
 function preventReload(e) {
     if (e) e.preventDefault();
 }
@@ -23,17 +22,33 @@ async function generateAndRedirect() {
 
 function copyEmail(e) {
     preventReload(e);
-    const urlParts = window.location.pathname.split('/');
-    const emailAddress = urlParts[urlParts.length - 1];
-    if(!emailAddress) return;
     
-    navigator.clipboard.writeText(emailAddress);
+    // Copy from the new widget input box
+    const emailInput = document.getElementById('current-email-input');
+    if(!emailInput) return;
     
-    const btn = document.getElementById('copyBtn');
-    if(btn) {
-        btn.innerHTML = '<i class="fa-solid fa-check" style="color: var(--neon-blue);"></i> Copied!';
+    emailInput.select();
+    emailInput.setSelectionRange(0, 99999); 
+    navigator.clipboard.writeText(emailInput.value);
+    
+    // Animate the Green Widget Button
+    const widgetBtn = document.getElementById('widgetCopyBtn');
+    if(widgetBtn) {
+        const originalHTML = widgetBtn.innerHTML;
+        widgetBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied';
+        setTimeout(() => { widgetBtn.innerHTML = originalHTML; }, 2000);
+    }
+
+    // Animate the Dim Grid Button
+    const gridBtn = document.getElementById('copyBtn');
+    if(gridBtn) {
+        gridBtn.innerHTML = '<i class="fa-solid fa-check" style="color: var(--neon-blue);"></i> Copied!';
+        gridBtn.style.borderColor = "var(--neon-blue)";
+        gridBtn.style.boxShadow = "0 0 20px var(--neon-glow)";
         setTimeout(() => { 
-            btn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy'; 
+            gridBtn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy'; 
+            gridBtn.style.borderColor = "var(--border-dim)";
+            gridBtn.style.boxShadow = "none";
         }, 2000);
     }
 }
@@ -45,8 +60,12 @@ async function fetchEmails(e) {
     
     if(!emailAddress || !emailAddress.includes('@')) return;
     
-    const displayElement = document.getElementById('current-email-display');
-    if(displayElement) displayElement.innerText = emailAddress;
+    // Update both displays
+    const badgeElement = document.getElementById('current-email-display');
+    if(badgeElement) badgeElement.innerText = emailAddress;
+    
+    const inputElement = document.getElementById('current-email-input');
+    if(inputElement) inputElement.value = emailAddress;
 
     try {
         const response = await fetch(`/api/messages/${emailAddress}`);
@@ -54,7 +73,6 @@ async function fetchEmails(e) {
         const list = document.getElementById('message-list');
         
         if (messages.length === 0) {
-            // THE EXACT INFINITE SPINNER
             list.innerHTML = `
                 <div class="empty-state">
                     <div class="spin-container">
@@ -71,7 +89,7 @@ async function fetchEmails(e) {
         messages.reverse().forEach(msg => {
             list.innerHTML += `
                 <div class="message-row">
-                    <div class="msg-sender">${msg.sender}</div>
+                    <div class="msg-sender"><i class="fa-solid fa-circle-user" style="color:var(--neon-blue); margin-right:8px;"></i>${msg.sender}</div>
                     <div class="msg-subject"><span style="color:#fff;">${msg.subject}</span> - ${msg.text.substring(0, 50)}...</div>
                 </div>
             `;
@@ -81,7 +99,6 @@ async function fetchEmails(e) {
     }
 }
 
-// Ensure it starts polling seamlessly in the background
 if (window.location.pathname.startsWith('/inbox/')) {
     fetchEmails();
     setInterval(() => fetchEmails(), 4000); 
