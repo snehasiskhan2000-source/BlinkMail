@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
+
+:root {
+    --bg-dark: #050505;
+    --bg-panel: rgba(17, 17, 17, 0.7);
+    --neon-blue: #00f3ff;
+    --text-main: #ffffff;
+    --text-muted: #a0a0a0;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: radial-gradient(circle at top, #1a1a2e, var(--bg-dark));
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes glowPulse {
+    0% { box-shadow: 0 0 10px rgba(0, 243, 255, 0.2); }
+    50% { box-shadow: 0 0 25px rgba(0, 243, 255, 0.6); }
+    100% { box-shadow: 0 0 10px rgba(0, 243, 255, 0.2); }
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* Header & Hero */
+.hero {
+    text-align: center;
+    margin-top: 10vh;
+}
+.hero h1 {
+    font-size: 4rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+}
+.hero span { color: var(--neon-blue); }
+.hero p {
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+
+/* Buttons */
+.btn {
+    background: transparent;
+    color: var(--neon-blue);
+    border: 2px solid var(--neon-blue);
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: glowPulse 2s infinite;
+}
+.btn:hover {
+    background: var(--neon-blue);
+    color: #000;
+    box-shadow: 0 0 30px var(--neon-blue);
+    transform: scale(1.05);
+}
+
+/* Inbox Elements */
+.inbox-header {
+    background: var(--bg-panel);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 243, 255, 0.2);
+    padding: 20px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    gap: 15px;
+}
+.email-display {
+    font-size: 1.2rem;
+    font-weight: 600;
+    word-break: break-all;
+}
+.btn-small {
+    padding: 8px 20px;
+    font-size: 1rem;
+    animation: none;
+}
+
+.message-list {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.message-card {
+    background: var(--bg-panel);
+    border-left: 4px solid var(--neon-blue);
+    padding: 20px;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeIn 0.5s ease-out forwards;
+}
+.message-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.sender { color: var(--neon-blue); font-weight: 600; margin-bottom: 5px; }
+.subject { font-size: 1.1rem; margin-bottom: 10px; color: #fff; }
+.body-preview { color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; }
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+    .hero h1 { font-size: 2.8rem; }
+    .hero p { font-size: 1rem; }
+    .inbox-header { flex-direction: column; text-align: center; }
+    .btn { width: 100%; }
+}
