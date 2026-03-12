@@ -1,3 +1,13 @@
+// Prevent accidental form submissions or default reloads
+function preventReload(e) {
+    if (e) e.preventDefault();
+}
+
+function goToHome(e) {
+    preventReload(e);
+    window.location.href = '/';
+}
+
 async function generateAndRedirect() {
     const btn = document.getElementById('generateBtn');
     if(btn) btn.innerHTML = 'Generating... <i class="fa-solid fa-circle-notch fa-spin"></i>';
@@ -11,30 +21,36 @@ async function generateAndRedirect() {
     }
 }
 
-function copyEmail() {
-    const emailInput = document.getElementById('current-email-input');
-    if(!emailInput) return;
+function copyEmail(e) {
+    preventReload(e);
+    const urlParts = window.location.pathname.split('/');
+    const emailAddress = urlParts[urlParts.length - 1];
+    if(!emailAddress) return;
     
-    emailInput.select();
-    emailInput.setSelectionRange(0, 99999); 
-    navigator.clipboard.writeText(emailInput.value);
+    navigator.clipboard.writeText(emailAddress);
     
-    const btn1 = document.getElementById('copyBtn1');
-    if(btn1) {
-        const originalText = btn1.innerHTML;
-        btn1.innerHTML = '<i class="fa-solid fa-check"></i> Copied';
-        setTimeout(() => { btn1.innerHTML = originalText; }, 2000);
+    const btn = document.getElementById('copyBtn');
+    if(btn) {
+        btn.innerHTML = '<i class="fa-solid fa-check" style="color: var(--neon-blue);"></i> Copied!';
+        btn.style.borderColor = "var(--neon-blue)";
+        btn.style.boxShadow = "0 0 20px var(--neon-glow)";
+        setTimeout(() => { 
+            btn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy'; 
+            btn.style.borderColor = "var(--border-dim)";
+            btn.style.boxShadow = "none";
+        }, 2000);
     }
 }
 
-async function fetchEmails() {
+async function fetchEmails(e) {
+    preventReload(e);
     const urlParts = window.location.pathname.split('/');
     const emailAddress = urlParts[urlParts.length - 1];
     
     if(!emailAddress || !emailAddress.includes('@')) return;
     
-    const inputField = document.getElementById('current-email-input');
-    if(inputField) inputField.value = emailAddress;
+    const displayElement = document.getElementById('current-email-display');
+    if(displayElement) displayElement.innerText = emailAddress;
 
     try {
         const response = await fetch(`/api/messages/${emailAddress}`);
@@ -42,12 +58,12 @@ async function fetchEmails() {
         const list = document.getElementById('message-list');
         
         if (messages.length === 0) {
-            // EXACT Custom Empty State Animation
+            // THE EXACT INFINITE SPINNER
             list.innerHTML = `
                 <div class="empty-state">
-                    <div class="anim-wrapper">
-                        <i class="fa-solid fa-envelope anim-envelope"></i>
-                        <div class="anim-ring"></div>
+                    <div class="spin-container">
+                        <i class="fa-solid fa-envelope"></i>
+                        <div class="spin-ring"></div>
                     </div>
                     <h3>Your inbox is empty</h3>
                     <p>Waiting for incoming emails...</p>
@@ -59,7 +75,7 @@ async function fetchEmails() {
         messages.reverse().forEach(msg => {
             list.innerHTML += `
                 <div class="message-row">
-                    <div class="msg-sender">${msg.sender}</div>
+                    <div class="msg-sender"><i class="fa-solid fa-circle-user" style="color:var(--neon-blue); margin-right:8px;"></i>${msg.sender}</div>
                     <div class="msg-subject"><span style="color:#fff;">${msg.subject}</span> - ${msg.text.substring(0, 50)}...</div>
                 </div>
             `;
@@ -69,7 +85,9 @@ async function fetchEmails() {
     }
 }
 
+// Ensure index.html doesn't crash if it loads script.js
 if (window.location.pathname.startsWith('/inbox/')) {
     fetchEmails();
-    setInterval(fetchEmails, 3000); 
+    // Refresh seamlessly in the background every 4 seconds
+    setInterval(() => fetchEmails(), 4000); 
 }
