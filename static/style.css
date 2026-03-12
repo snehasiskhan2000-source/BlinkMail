@@ -112,3 +112,39 @@ body { background-color: var(--bg-base); color: var(--text-main); overflow-x: hi
 @media (max-width: 600px) {
     .home-hero h1 { font-size: 3.5rem; }
 }
+
+/* --- RESTORED EMAIL WIDGET (Matches Pic 3) --- */
+.email-widget {
+    background: #1c1f2b; 
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 30px;
+    max-width: 600px;
+    margin: 0 auto 20px auto;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+.widget-title { font-size: 1.2rem; font-weight: 500; margin-bottom: 20px; color: var(--text-main); }
+.input-wrapper { background: #11131a; border-radius: 10px; padding: 15px; margin-bottom: 25px; }
+.email-input { background: transparent; border: none; color: var(--text-main); width: 100%; text-align: center; font-size: 1.3rem; font-weight: 700; outline: none; }
+.widget-buttons { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+
+.btn-qr { 
+    background: #3b5c73; color: #fff; border: none; padding: 12px 30px; 
+    border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; 
+    display: flex; align-items: center; gap: 8px; transition: 0.2s; 
+}
+.btn-qr:hover { background: #4a7390; }
+
+.btn-copy { 
+    background: var(--primary-green); color: #fff; border: none; padding: 12px 30px; 
+    border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; 
+    display: flex; align-items: center; gap: 8px; 
+    box-shadow: 0 4px 20px rgba(0, 217, 139, 0.4); transition: 0.2s; 
+}
+.btn-copy:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(0, 217, 139, 0.6); }
+
+.widget-subtext { 
+    text-align: center; color: var(--text-muted); font-size: 0.9rem; 
+    max-width: 550px; margin: 0 auto 40px auto; line-height: 1.6; 
+}
