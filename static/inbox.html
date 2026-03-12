@@ -18,6 +18,19 @@
     </div>
 
     <div class="inbox-wrapper">
+        
+        <div class="email-widget">
+            <h2 class="widget-title">Your Temporary Email Address</h2>
+            <div class="input-wrapper">
+                <input type="text" id="current-email-input" class="email-input" readonly value="Loading...">
+            </div>
+            <div class="widget-buttons">
+                <button class="btn-qr"><i class="fa-solid fa-qrcode"></i> QR code</button>
+                <button class="btn-copy" id="widgetCopyBtn" onclick="copyEmail(event)"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+        </div>
+        <p class="widget-subtext">Forget about spam, advertising mailings, hacking and attacking robots. Keep your real mailbox clean and secure. BlinkMail provides temporary, secure, anonymous, free, disposable email address.</p>
+
         <div class="action-grid">
             <button class="action-btn" id="copyBtn" onclick="copyEmail(event)">
                 <i class="fa-regular fa-copy"></i> Copy
