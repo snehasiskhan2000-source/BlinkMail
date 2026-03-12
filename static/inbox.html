@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Inbox | BlinkMail</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/style.css?v=godmode">
 </head>
 <body>
 
@@ -62,7 +62,19 @@
                 INBOX <span class="email-badge" id="current-email-display">Loading...</span>
             </div>
             <div class="inbox-body" id="message-list">
+                
+                <div id="empty-state" class="empty-state">
+                    <div class="spin-container">
+                        <i class="fa-solid fa-envelope"></i>
+                        <div class="spin-ring"></div>
+                    </div>
+                    <h3>Your inbox is empty</h3>
+                    <p>Waiting for incoming emails...</p>
                 </div>
+
+                <div id="emails-container"></div>
+
+            </div>
         </div>
     </div>
 
@@ -123,6 +135,6 @@
         <p>Have a disposable mail address system set up in a fantastic way to make sure when you participate in online wikis, chat rooms, and file sharing services and bulletin boards forums your real identity is never disclosed and never sold to anyone to avoid mail spam with blinkmail.techbittu.co.uk.</p>
     </div>
 
-    <script src="/static/script.js"></script>
+    <script src="/static/script.js?v=godmode"></script>
 </body>
 </html>
