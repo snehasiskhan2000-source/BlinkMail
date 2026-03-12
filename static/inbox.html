@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Inbox | BlinkMail</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/static/style.css?v=godmode">
+    <link rel="stylesheet" href="/static/style.css?v=finalboss">
 </head>
 <body>
 
@@ -28,8 +28,20 @@
         </div>
     </div>
 
+    <div id="emailModal" class="email-modal">
+        <div class="email-content">
+            <span class="close-email" onclick="closeEmail()">&times;</span>
+            <div class="reader-header">
+                <div class="reader-subject" id="readerSubject">Subject Here</div>
+                <div class="reader-sender" id="readerSender">Sender Here</div>
+            </div>
+            <div class="reader-body" id="readerBody">
+                Email body content goes here...
+            </div>
+        </div>
+    </div>
+
     <div class="inbox-wrapper">
-        
         <div class="email-widget">
             <h2 class="widget-title">Your Temporary Email Address</h2>
             <div class="input-wrapper">
@@ -43,18 +55,10 @@
         <p class="widget-subtext">Forget about spam, advertising mailings, hacking and attacking robots. Keep your real mailbox clean and secure. BlinkMail provides temporary, secure, anonymous, free, disposable email address.</p>
 
         <div class="action-grid">
-            <button class="action-btn" id="copyBtn" onclick="copyEmail(event)">
-                <i class="fa-regular fa-copy"></i> Copy
-            </button>
-            <button class="action-btn" onclick="fetchEmails(event)">
-                <i class="fa-solid fa-arrow-rotate-right"></i> Refresh
-            </button>
-            <button class="action-btn" onclick="changeEmail(event)">
-                <i class="fa-regular fa-pen-to-square"></i> Change
-            </button>
-            <button class="action-btn" onclick="changeEmail(event)">
-                <i class="fa-solid fa-xmark"></i> Delete
-            </button>
+            <button class="action-btn" id="copyBtn" onclick="copyEmail(event)"><i class="fa-regular fa-copy"></i> Copy</button>
+            <button class="action-btn" onclick="fetchEmails(event)"><i class="fa-solid fa-arrow-rotate-right"></i> Refresh</button>
+            <button class="action-btn" onclick="changeEmail(event)"><i class="fa-regular fa-pen-to-square"></i> Change</button>
+            <button class="action-btn" onclick="changeEmail(event)"><i class="fa-solid fa-xmark"></i> Delete</button>
         </div>
 
         <div class="inbox-box">
@@ -62,7 +66,6 @@
                 INBOX <span class="email-badge" id="current-email-display">Loading...</span>
             </div>
             <div class="inbox-body" id="message-list">
-                
                 <div id="empty-state" class="empty-state">
                     <div class="spin-container">
                         <i class="fa-solid fa-envelope"></i>
@@ -71,9 +74,7 @@
                     <h3>Your inbox is empty</h3>
                     <p>Waiting for incoming emails...</p>
                 </div>
-
                 <div id="emails-container"></div>
-
             </div>
         </div>
     </div>
@@ -84,7 +85,6 @@
         <br>
         <p>We all enjoy having an email address, but getting tons of spam emails each day doesn't feel comfortable. Furthermore, it's entirely common for stores to have their databases hacked, leaving your business email address at risk and more likely to end up on spam lists. Still, nothing done online is 100% private. Thus you need to protect your email contact identity and best done using disposable emails address.</p>
         <br>
-        
         <h2 style="text-align: center;">So, What Is A Disposable Email Address?</h2>
         <p>Recently, I found a bounce rate complex than usual on my latest email blast! I later realized the surge of users (or bots) signing up for my services hiding their real identity using disposable mail addresses.</p>
         <br>
@@ -92,7 +92,6 @@
         <br>
         <p>Disposable emails address if compromised or used in connection with email abuse online, the owner can't be tied to the abuse and quickly cancel its application without affecting other contacts. With temporary mail, you can receive your emails from the fake emails in your genuine emails address for a specified time set. The fake email address is simply a through-away email, temporary email set and self-destructs email.</p>
         <br>
-
         <h2 style="text-align: center;">Why would you need a fake email address?</h2>
         <p>You must have noted services such as Amazon Prime, Hulu and Netflix allow limited-time test runs(trials), however, if still determined to use the services all you need is a disposable email address. Technically, you can extend your trial usage using a different email address linked to your original (genuine) after the trial period expires.</p>
         <br>
@@ -108,7 +107,6 @@
             <li style="margin-bottom: 10px;"><b>Eliminate Spam:</b> A Disposable email address is a very useful tool against spam, especially, for users who consistently access web forms, Forums and discussion groups you can curb spam to an absolute minimum with a disposable email address.</li>
         </ul>
         <br>
-
         <h2 style="text-align: center;">How to Choose a Disposable Email?</h2>
         <p>The best fake email provider should:</p>
         <ul style="color: var(--text-muted); font-size: 0.95rem; margin-left: 20px; line-height: 1.7; font-weight: 500;">
@@ -122,7 +120,6 @@
         </ul>
         <p style="margin-top: 15px;">Thus stay spam free and save time with blinkmail.techbittu.co.uk your favorite email service.</p>
         <br>
-
         <h2 style="text-align: center;">How to Use Disposable Email Address?</h2>
         <p>Users choose to get disposable email address by creating a new email account with their current email provider's such as Gmail, but the account comes with many challenges such as you will have to manage emails new account. Users, who opt for free mail services by creating a new account, put up with a new email address.</p>
         <br>
@@ -130,11 +127,10 @@
         <br>
         <p>The amazing thing about a disposable email address is you can forward directly to your real email account. In case the disposable email address is compromised, and you are suspicious of one of your contacts you can have those emails sent directly to your trash, and for those necessary connections have them sent directly to your real email address inbox.</p>
         <br>
-
         <h2 style="text-align: center;">To Conclude:</h2>
         <p>Have a disposable mail address system set up in a fantastic way to make sure when you participate in online wikis, chat rooms, and file sharing services and bulletin boards forums your real identity is never disclosed and never sold to anyone to avoid mail spam with blinkmail.techbittu.co.uk.</p>
     </div>
 
-    <script src="/static/script.js?v=godmode"></script>
+    <script src="/static/script.js?v=finalboss"></script>
 </body>
 </html>
