@@ -9,36 +9,39 @@ import uvicorn
 
 app = FastAPI()
 
-# Mount the static folder for CSS, JS, and HTML
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# Ephemeral Database for BlinkMail
 inbox_db = {}
 
-# 🪄 THE MASTER LIST: Real 5-letter names for premium generation
+# 🪄 THE MASSIVE MASTER LIST (Indian + Global Names)
 NAMES = [
-    "james", "david", "chris", "sarah", "maria", "kevin", "jason", 
-    "peter", "lucas", "simon", "frank", "harry", "julia", "alice", 
-    "steve", "brian", "clara", "diana", "elena", "felix", "grace", 
-    "henry", "irene", "jacob", "karen", "laura", "mason", "nolan", 
-    "paula", "quinn", "roman", "scott", "tanya", "vance", "wendy"
+    "aarav", "aditya", "amit", "anjali", "arjun", "aryan", "ayush", "deepak", "divya", "gaurav",
+    "harsh", "ishaan", "karan", "kavya", "kiran", "krishna", "manish", "meha", "neha", "nikhil",
+    "nisha", "pooja", "pranav", "priya", "rahul", "raj", "riya", "rohan", "rohit", "sachin",
+    "sameer", "sanjay", "sneha", "sumit", "sunil", "suraj", "swati", "tarun", "varun", "vikas",
+    "vikram", "vishal", "yash", "zoya", "abhishek", "akash", "ankit", "ashish", "chetna", "darshan",
+    "gautam", "hari", "isha", "jyoti", "kamal", "kunal", "lakshmi", "madhav", "manoj", "maya",
+    "mohan", "mukesh", "naveen", "nitin", "pallavi", "pankaj", "piyush", "pradeep", "prakash", "pramod",
+    "prashant", "praveen", "preeti", "radha", "raghav", "rajan", "rajesh", "rajiv", "rakesh", "ramesh",
+    "ravi", "rekha", "rishabh", "ritu", "roshni", "sahil", "sandeep", "sangeeta", "sanjiv", "saurabh",
+    "shankar", "shikha", "shilpa", "shivam", "shreya", "shruti", "shweta", "siddharth", "sonam", "sonia",
+    "sourabh", "srinivas", "subhash", "sudhir", "sujata", "suresh", "sushil", "sushma", "swapnil", "sweta",
+    "umesh", "upendra", "utkarsh", "vaibhav", "vandana", "vidya", "vijay", "vikash", "vinay", "vineet",
+    "vinod", "vipul", "virendra", "vishnu", "vivek", "james", "david", "chris", "sarah", "maria", 
+    "kevin", "jason", "peter", "lucas", "simon", "frank", "harry", "julia", "alice", "steve"
 ]
 
-# 🪄 Added @app.head to accept UptimeRobot pings!
 @app.get("/")
 @app.head("/")
 async def home():
-    """Serves the Premium Home Page"""
     return FileResponse("static/index.html")
 
 @app.get("/inbox/{email}")
 async def view_inbox(email: str):
-    """Serves the Inbox Page"""
     return FileResponse("static/inbox.html")
 
 @app.get("/api/generate")
 async def generate_email():
-    """Generates a realistic BlinkMail address 💀"""
     name = random.choice(NAMES)
     numbers = ''.join(random.choice(string.digits) for _ in range(3))
     email = f"{name}{numbers}@blinkmail.techbittu.co.uk"
@@ -56,7 +59,6 @@ class IncomingEmail(BaseModel):
 
 @app.post("/api/webhook")
 async def receive_email(email: IncomingEmail):
-    """Cloudflare posts intercepted emails here"""
     recipient = email.to.lower()
     if recipient not in inbox_db:
         inbox_db[recipient] = []
@@ -68,7 +70,6 @@ async def receive_email(email: IncomingEmail):
     })
     return {"status": "success"}
 
-# 🪄 Added @app.head to accept UptimeRobot pings!
 @app.get("/ping")
 @app.head("/ping")
 async def ping():
