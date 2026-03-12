@@ -1,13 +1,10 @@
-function preventReload(e) {
-    if (e) e.preventDefault();
-}
+function preventReload(e) { if (e) e.preventDefault(); }
 
 async function changeEmail(e) {
     preventReload(e);
     const btn = e.currentTarget;
     const originalHTML = btn.innerHTML;
     btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Generating...';
-    
     try {
         const response = await fetch('/api/generate');
         const data = await response.json();
@@ -21,7 +18,6 @@ async function changeEmail(e) {
 async function generateAndRedirect() {
     const btn = document.getElementById('generateBtn');
     if(btn) btn.innerHTML = 'Generating... <i class="fa-solid fa-circle-notch fa-spin"></i>';
-    
     try {
         const response = await fetch('/api/generate');
         const data = await response.json();
@@ -35,7 +31,6 @@ function copyEmail(e) {
     preventReload(e);
     const emailInput = document.getElementById('current-email-input');
     if(!emailInput) return;
-    
     emailInput.select();
     emailInput.setSelectionRange(0, 99999); 
     navigator.clipboard.writeText(emailInput.value);
@@ -46,7 +41,6 @@ function copyEmail(e) {
         widgetBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied';
         setTimeout(() => { widgetBtn.innerHTML = originalHTML; }, 2000);
     }
-
     const gridBtn = document.getElementById('copyBtn');
     if(gridBtn) {
         gridBtn.innerHTML = '<i class="fa-solid fa-check" style="color: var(--neon-blue);"></i> Copied!';
@@ -64,45 +58,41 @@ function showQR(e) {
     preventReload(e);
     const emailInput = document.getElementById('current-email-input');
     if(!emailInput || !emailInput.value) return;
-    
-    const qrImg = document.getElementById('qrImage');
-    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=mailto:${emailInput.value}`;
-    
-    const modal = document.getElementById('qrModal');
-    modal.classList.add('show');
+    document.getElementById('qrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=mailto:${emailInput.value}`;
+    document.getElementById('qrModal').classList.add('show');
 }
+function closeQR() { document.getElementById('qrModal').classList.remove('show'); }
 
-function closeQR() {
-    const modal = document.getElementById('qrModal');
-    modal.classList.remove('show');
+// 🪄 EMAIL READER MODAL LOGIC
+function openEmail(sender, subject, body) {
+    document.getElementById('readerSender').innerText = sender;
+    document.getElementById('readerSubject').innerText = subject;
+    document.getElementById('readerBody').innerText = body;
+    document.getElementById('emailModal').classList.add('show');
 }
+function closeEmail() { document.getElementById('emailModal').classList.remove('show'); }
 
 window.onclick = function(event) {
-    const modal = document.getElementById('qrModal');
-    if (event.target === modal) {
-        closeQR();
-    }
+    const qrModal = document.getElementById('qrModal');
+    const emailModal = document.getElementById('emailModal');
+    if (event.target === qrModal) closeQR();
+    if (event.target === emailModal) closeEmail();
 }
 
 async function fetchEmails(e) {
     if(e) preventReload(e);
-    
     const urlParts = window.location.pathname.split('/');
     const emailAddress = urlParts[urlParts.length - 1];
-    
     if(!emailAddress || !emailAddress.includes('@')) return;
     
     const badgeElement = document.getElementById('current-email-display');
     if(badgeElement) badgeElement.innerText = emailAddress;
-    
     const inputElement = document.getElementById('current-email-input');
     if(inputElement) inputElement.value = emailAddress;
 
     try {
         const response = await fetch(`/api/messages/${emailAddress}`);
         const messages = await response.json();
-        
-        // 🪄 The Bulletproof UI Fix
         const emptyState = document.getElementById('empty-state');
         const emailsContainer = document.getElementById('emails-container');
         
@@ -112,15 +102,27 @@ async function fetchEmails(e) {
             return;
         }
 
-        // Hide spinner and draw emails!
         emptyState.style.display = 'none';
-        
         let newHTML = '';
+        
+        // 🪄 FORMATTED EXACTLY LIKE SCREENSHOT (Green Dot, Sender, Email, Subject, Arrow)
         messages.reverse().forEach(msg => {
+            // Escape quotes to prevent HTML breaking
+            const safeSender = msg.sender.replace(/"/g, '&quot;');
+            const safeSubject = msg.subject.replace(/"/g, '&quot;');
+            const safeBody = msg.text.replace(/"/g, '&quot;');
+            
             newHTML += `
-                <div class="message-row">
-                    <div class="msg-sender"><i class="fa-solid fa-circle-user" style="color:var(--neon-blue); margin-right:8px;"></i>${msg.sender}</div>
-                    <div class="msg-subject"><span style="color:#fff;">${msg.subject}</span> - ${msg.text.substring(0, 50)}...</div>
+                <div class="message-row" onclick="openEmail('${safeSender}', '${safeSubject}', '${safeBody}')">
+                    <div class="msg-left">
+                        <div class="msg-dot"></div>
+                        <div class="msg-content">
+                            <div class="msg-sender">${msg.sender}</div>
+                            <div class="msg-email">${emailAddress}</div>
+                            <div class="msg-subject">${msg.subject}</div>
+                        </div>
+                    </div>
+                    <div class="msg-arrow"><i class="fa-solid fa-angle-right"></i></div>
                 </div>
             `;
         });
@@ -128,7 +130,6 @@ async function fetchEmails(e) {
         if (emailsContainer.innerHTML !== newHTML) {
             emailsContainer.innerHTML = newHTML;
         }
-
     } catch (error) {
         console.error("Failed to fetch", error);
     }
