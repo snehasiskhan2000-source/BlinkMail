@@ -1,137 +1,113 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 
 :root {
-    --bg-base: #030305;
-    --bg-panel: #0d0f14;
-    --bg-glass: rgba(0, 243, 255, 0.03);
-    --border-glass: rgba(0, 243, 255, 0.15);
+    --bg-base: #0a0b10;
+    --bg-panel: #161822;
+    --bg-button: #13141c;
+    --border-dim: #222532;
     --neon-blue: #00f3ff;
     --neon-glow: rgba(0, 243, 255, 0.4);
+    --primary-green: #00d98b;
     --text-main: #ffffff;
-    --text-muted: #888c99;
+    --text-muted: #8c92a5;
+    --yellow-pill: #ffea00;
 }
 
 * { 
-    box-sizing: border-box; 
-    margin: 0; 
-    padding: 0; 
-    font-family: 'Poppins', sans-serif; 
-    -webkit-tap-highlight-color: transparent; /* Kills the ugly blue tap box! */
+    box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; 
+    -webkit-tap-highlight-color: transparent; 
 }
 
-body { 
-    background-color: var(--bg-base); 
-    color: var(--text-main); 
-    overflow-x: hidden; 
-    width: 100%;
-}
+body { background-color: var(--bg-base); color: var(--text-main); overflow-x: hidden; }
 
 /* --- ANIMATIONS --- */
-@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes spin { 100% { transform: rotate(360deg); } }
-@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-@keyframes textGlow { 0%, 100% { text-shadow: 0 0 10px var(--neon-glow); } 50% { text-shadow: 0 0 30px var(--neon-blue); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes infiniteSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@keyframes textGlow { 0%, 100% { text-shadow: 0 0 10px var(--neon-glow); } 50% { text-shadow: 0 0 25px var(--neon-blue); } }
 
-/* --- HOME PAGE (ULTRA PREMIUM) --- */
+/* --- HEADER (MATCHES PIC 2) --- */
+.top-navbar {
+    display: flex; justify-content: space-between; align-items: center; 
+    padding: 15px 5%; background: var(--bg-panel); border-bottom: 1px solid var(--border-dim);
+}
+.brand-logo { display: flex; align-items: center; gap: 10px; font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; color: #fff; text-transform: uppercase; }
+.brand-icon { background: var(--primary-green); color: #fff; padding: 6px 10px; border-radius: 6px; transform: skew(-8deg); font-size: 1.2rem; }
+.contact-btn {
+    background: var(--yellow-pill); color: #000; padding: 8px 25px; border-radius: 30px; 
+    font-weight: 600; text-decoration: none; transition: 0.3s; box-shadow: 0 4px 15px rgba(255, 234, 0, 0.2);
+}
+.contact-btn:hover { box-shadow: 0 0 20px rgba(255, 234, 0, 0.6); transform: translateY(-2px); }
+
+/* --- HOME PAGE HERO --- */
 .home-wrapper {
-    min-height: 100vh;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
     text-align: center; padding: 20px;
-    background: radial-gradient(circle at 50% 30%, rgba(0, 243, 255, 0.1) 0%, var(--bg-base) 60%);
+    background: radial-gradient(circle at 50% 30%, rgba(0, 243, 255, 0.08) 0%, var(--bg-base) 60%);
 }
-.home-hero { animation: fadeIn 1s ease-out; z-index: 2; }
-.home-hero h1 { 
-    font-size: 5rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 10px;
-    animation: textGlow 3s infinite;
-}
+.home-hero h1 { font-size: 4.5rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 10px; animation: textGlow 3s infinite; }
 .home-hero h1 span { color: var(--neon-blue); }
-.home-hero p { color: var(--text-muted); font-size: 1.1rem; max-width: 500px; margin: 0 auto 40px auto; line-height: 1.6; }
+.home-hero p { color: var(--text-muted); font-size: 1.1rem; max-width: 500px; margin: 0 auto 40px auto; }
 
 .btn-premium {
     background: transparent; color: var(--neon-blue); border: 2px solid var(--neon-blue);
     padding: 18px 45px; font-size: 1.2rem; font-weight: 700; border-radius: 50px;
-    cursor: pointer; position: relative; overflow: hidden; transition: 0.3s;
-    box-shadow: 0 0 20px var(--neon-glow);
+    cursor: pointer; transition: 0.3s; box-shadow: 0 0 15px var(--neon-glow);
 }
-.btn-premium:hover {
-    background: var(--neon-blue); color: #000; box-shadow: 0 0 40px var(--neon-blue); transform: scale(1.05);
-}
+.btn-premium:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 35px var(--neon-blue); transform: scale(1.05); }
 
 /* --- INBOX PAGE --- */
-.inbox-wrapper { width: 100%; max-width: 800px; margin: 0 auto; padding: 20px; animation: fadeIn 0.6s ease-out; }
+.inbox-wrapper { width: 100%; max-width: 800px; margin: 40px auto; padding: 0 20px; animation: fadeIn 0.6s ease-out; }
 
-.brand-header { text-align: center; font-size: 2rem; font-weight: 800; margin: 20px 0 40px 0; letter-spacing: -1px; }
-.brand-header span { color: var(--neon-blue); text-shadow: 0 0 15px var(--neon-glow); }
-
-/* Email Display Panel */
-.email-panel {
-    background: var(--bg-panel); border: 1px solid var(--border-glass); border-radius: 20px;
-    padding: 30px 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    margin-bottom: 25px; width: 100%;
-}
-.email-panel p { color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; }
-.input-glass {
-    background: var(--bg-base); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px;
-    padding: 18px; margin-bottom: 25px; width: 100%;
-}
-.email-input {
-    background: transparent; border: none; color: var(--text-main); width: 100%; text-align: center;
-    font-size: 1.2rem; font-weight: 700; outline: none; text-overflow: ellipsis; overflow: hidden;
-}
-
-/* Button Grid (Mobile Safe) */
-.btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-.btn-glass {
-    background: var(--bg-glass); border: 1px solid var(--border-glass); color: var(--text-main);
-    padding: 15px; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s;
-}
-.btn-glass:hover { background: rgba(0, 243, 255, 0.1); border-color: var(--neon-blue); transform: translateY(-2px); box-shadow: 0 5px 15px var(--neon-glow); }
-.btn-glass.active { background: var(--neon-blue); color: #000; }
-
-/* 4-Button Action Row */
-.action-row {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 30px; width: 100%;
+/* Action Grid (MATCHES PIC 1) */
+.action-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 30px;
+    max-width: 500px; margin-left: auto; margin-right: auto;
 }
 .action-btn {
-    background: var(--bg-panel); border: 1px solid rgba(255,255,255,0.05); color: var(--text-muted);
-    padding: 12px 5px; border-radius: 12px; font-size: 0.85rem; font-weight: 500; cursor: pointer;
-    display: flex; flex-direction: column; align-items: center; gap: 5px; transition: 0.2s;
+    background: var(--bg-button); border: 1px solid var(--border-dim); color: var(--text-muted);
+    padding: 20px 10px; border-radius: 16px; font-size: 1.1rem; font-weight: 500; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; gap: 8px; transition: all 0.3s ease;
 }
-.action-btn i { font-size: 1.2rem; margin-bottom: 3px; }
-.action-btn:hover { color: var(--neon-blue); border-color: var(--border-glass); background: var(--bg-glass); }
+.action-btn i { font-size: 1.6rem; color: var(--text-muted); transition: 0.3s; }
+
+/* THE MAGIC GLOW ON HOVER/TAP */
+.action-btn:hover, .action-btn:active {
+    background: var(--bg-panel); color: var(--neon-blue); border-color: var(--neon-blue);
+    box-shadow: 0 0 25px var(--neon-glow); transform: translateY(-3px);
+}
+.action-btn:hover i, .action-btn:active i { color: var(--neon-blue); }
 
 /* Inbox Table */
-.inbox-box {
-    background: var(--bg-panel); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05);
-}
-.inbox-title { background: #161922; padding: 15px 20px; font-weight: 700; font-size: 0.9rem; letter-spacing: 1px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-.inbox-body { min-height: 250px; display: flex; flex-direction: column; }
+.inbox-box { background: var(--bg-panel); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-dim); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+.inbox-title { background: #1a1d29; padding: 15px 20px; font-weight: 700; font-size: 0.9rem; letter-spacing: 1px; display: flex; justify-content: space-between; align-items: center;}
+.email-badge { background: rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; color: var(--text-muted); }
+.inbox-body { min-height: 250px; display: flex; flex-direction: column; justify-content: center; }
 
-/* EXACT SPINNING ENVELOPE ANIMATION */
+/* INFINITE SPINNING ENVELOPE */
 .empty-state { margin: auto; text-align: center; padding: 40px 20px; color: var(--text-muted); }
-.anim-wrapper { position: relative; width: 80px; height: 80px; margin: 0 auto 20px auto; display: flex; align-items: center; justify-content: center; }
-.anim-envelope { font-size: 2.5rem; color: #333644; z-index: 2; }
-.anim-ring {
+.spin-container { position: relative; width: 70px; height: 70px; margin: 0 auto 20px auto; display: flex; align-items: center; justify-content: center; }
+.spin-container i.fa-envelope { font-size: 2rem; color: #3a3f55; position: absolute; z-index: 2; }
+.spin-ring {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    border: 3px solid transparent; border-top: 3px solid var(--neon-blue); border-right: 3px solid var(--neon-glow);
-    border-radius: 50%; animation: spin 1.2s linear infinite; z-index: 1;
+    border: 3px solid transparent; border-top: 3px solid var(--text-muted); border-right: 3px solid var(--text-muted);
+    border-radius: 50%; animation: infiniteSpin 1.5s linear infinite; opacity: 0.5; z-index: 1;
 }
 
-.empty-state h3 { color: var(--text-main); font-size: 1.2rem; margin-bottom: 5px; font-weight: 500; }
-.empty-state p { font-size: 0.9rem; }
+.empty-state h3 { color: var(--text-main); font-size: 1.3rem; margin-bottom: 5px; font-weight: 600; letter-spacing: 0.5px; }
 
 /* Messages */
-.message-row {
-    padding: 18px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; gap: 5px; cursor: pointer; transition: 0.2s;
-}
-.message-row:hover { background: var(--bg-glass); border-left: 3px solid var(--neon-blue); }
-.msg-sender { font-weight: 600; color: var(--text-main); font-size: 0.95rem; }
-.msg-subject { color: var(--text-muted); font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.message-row { padding: 18px 20px; border-bottom: 1px solid var(--border-dim); cursor: pointer; transition: 0.2s; }
+.message-row:hover { background: rgba(0, 243, 255, 0.05); border-left: 3px solid var(--neon-blue); }
+.msg-sender { font-weight: 600; color: var(--text-main); font-size: 0.95rem; margin-bottom: 5px; }
+.msg-subject { color: var(--text-muted); font-size: 0.85rem; }
 
-/* Mobile Safeties */
+/* --- SEO ARTICLE (MATCHES PIC 3) --- */
+.seo-article { max-width: 800px; margin: 60px auto; text-align: center; padding: 0 20px 50px 20px; }
+.seo-article h2 { font-size: 2rem; font-weight: 700; margin-bottom: 20px; color: var(--text-main); }
+.seo-article p { color: var(--text-muted); font-size: 1rem; line-height: 1.7; }
+.seo-article b { color: var(--text-main); font-weight: 600; }
+
 @media (max-width: 600px) {
     .home-hero h1 { font-size: 3.5rem; }
-    .action-row { grid-template-columns: repeat(2, 1fr); }
-    .btn-premium { width: 100%; }
+    .top-navbar { flex-direction: column; gap: 15px; }
 }
