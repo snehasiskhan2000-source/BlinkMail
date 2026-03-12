@@ -9,32 +9,42 @@
 </head>
 <body>
 
-    <div class="inbox-wrapper">
-        <div class="brand-header"><i class="fa-solid fa-envelope-open-text" style="color:var(--neon-blue); margin-right:10px;"></i> Blink<span>Mail</span></div>
-
-        <div class="email-panel">
-            <p>Your Temporary Email Address</p>
-            <div class="input-glass">
-                <input type="text" id="current-email-input" class="email-input" readonly value="Loading server...">
-            </div>
-            <div class="btn-grid">
-                <button class="btn-glass"><i class="fa-solid fa-qrcode"></i> QR Code</button>
-                <button class="btn-glass active" id="copyBtn1" onclick="copyEmail()"><i class="fa-solid fa-copy"></i> Copy</button>
-            </div>
+    <div class="top-navbar">
+        <div class="brand-logo">
+            <span class="brand-icon"><i class="fa-solid fa-envelope-circle-check"></i></span>
+            BLINKMAIL
         </div>
+        <a href="https://t.me/Snehasiskhan" target="_blank" class="contact-btn">Contact Us</a>
+    </div>
 
-        <div class="action-row">
-            <button class="action-btn" onclick="copyEmail()"><i class="fa-solid fa-copy"></i> Copy</button>
-            <button class="action-btn" onclick="fetchEmails()"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
-            <button class="action-btn" onclick="window.location.href='/'"><i class="fa-solid fa-pen-to-square"></i> Change</button>
-            <button class="action-btn" onclick="window.location.href='/'"><i class="fa-solid fa-xmark"></i> Delete</button>
+    <div class="inbox-wrapper">
+        <div class="action-grid">
+            <button class="action-btn" id="copyBtn" onclick="copyEmail(event)">
+                <i class="fa-regular fa-copy"></i> Copy
+            </button>
+            <button class="action-btn" onclick="fetchEmails(event)">
+                <i class="fa-solid fa-arrow-rotate-right"></i> Refresh
+            </button>
+            <button class="action-btn" onclick="goToHome(event)">
+                <i class="fa-regular fa-pen-to-square"></i> Change
+            </button>
+            <button class="action-btn" onclick="goToHome(event)">
+                <i class="fa-solid fa-xmark"></i> Delete
+            </button>
         </div>
 
         <div class="inbox-box">
-            <div class="inbox-title">INBOX</div>
+            <div class="inbox-title">
+                INBOX <span class="email-badge" id="current-email-display">Loading...</span>
+            </div>
             <div class="inbox-body" id="message-list">
                 </div>
         </div>
+    </div>
+
+    <div class="seo-article">
+        <h2>What is Disposable Temporary E-mail?</h2>
+        <p><b>Disposable email</b> - is a free email service that allows to receive email at a temporary address that self-destructs after a certain time elapses. It is also known by names like: tempmail, 10minutemail, 10minmail, throwaway email, fake-mail, fake email generator, burner mail or trash-mail. Many forums, Wi-Fi owners, websites and blogs ask visitors to register before they can view content, post comments or download something. BlinkMail - is the most advanced throwaway email service that helps you avoid spam and stay safe.</p>
     </div>
 
     <script src="/static/script.js"></script>
