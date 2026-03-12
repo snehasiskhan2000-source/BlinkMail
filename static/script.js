@@ -85,7 +85,8 @@ window.onclick = function(event) {
 }
 
 async function fetchEmails(e) {
-    preventReload(e);
+    if(e) preventReload(e);
+    
     const urlParts = window.location.pathname.split('/');
     const emailAddress = urlParts[urlParts.length - 1];
     
@@ -100,26 +101,20 @@ async function fetchEmails(e) {
     try {
         const response = await fetch(`/api/messages/${emailAddress}`);
         const messages = await response.json();
-        const list = document.getElementById('message-list');
+        
+        // 🪄 The Bulletproof UI Fix
+        const emptyState = document.getElementById('empty-state');
+        const emailsContainer = document.getElementById('emails-container');
         
         if (messages.length === 0) {
-            // 🪄 THE FIX: Only draw the spinner IF it doesn't already exist!
-            // This stops the DOM from resetting and allows the animation to spin forever seamlessly.
-            if (!document.querySelector('.empty-state')) {
-                list.innerHTML = `
-                    <div class="empty-state">
-                        <div class="spin-container">
-                            <i class="fa-solid fa-envelope"></i>
-                            <div class="spin-ring"></div>
-                        </div>
-                        <h3>Your inbox is empty</h3>
-                        <p>Waiting for incoming emails...</p>
-                    </div>`;
-            }
+            emptyState.style.display = 'block';
+            emailsContainer.innerHTML = '';
             return;
         }
 
-        // If we have messages, overwrite the spinner and show them!
+        // Hide spinner and draw emails!
+        emptyState.style.display = 'none';
+        
         let newHTML = '';
         messages.reverse().forEach(msg => {
             newHTML += `
@@ -130,9 +125,8 @@ async function fetchEmails(e) {
             `;
         });
         
-        // Only update DOM if new messages arrived to prevent stutter
-        if (list.innerHTML !== newHTML) {
-            list.innerHTML = newHTML;
+        if (emailsContainer.innerHTML !== newHTML) {
+            emailsContainer.innerHTML = newHTML;
         }
 
     } catch (error) {
