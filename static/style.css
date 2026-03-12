@@ -1,13 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+/* 🪄 UPGRADED TO MONTSERRAT: The ultimate premium tech font */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
 
 :root {
-    /* YOUR ORIGINAL PREMIUM COLORS */
     --bg-base: #030305;
     --bg-panel: #0d0f14;
     --bg-glass: rgba(0, 243, 255, 0.03);
     --border-dim: #222532;
-    --neon-blue: #00f3ff;
-    --neon-glow: rgba(0, 243, 255, 0.4);
+    --neon-blue: #00e5ff; /* Matched to your exact solid cyan */
+    --neon-glow: rgba(0, 229, 255, 0.4);
     --primary-green: #00d98b; 
     --yellow-pill: #ffea00;
     --text-main: #ffffff;
@@ -15,7 +15,8 @@
 }
 
 * { 
-    box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; 
+    box-sizing: border-box; margin: 0; padding: 0; 
+    font-family: 'Montserrat', sans-serif; /* 🪄 Premium Font Applied */
     -webkit-tap-highlight-color: transparent; 
 }
 
@@ -26,7 +27,7 @@ body { background-color: var(--bg-base); color: var(--text-main); overflow-x: hi
 @keyframes infiniteSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 @keyframes textGlow { 0%, 100% { text-shadow: 0 0 10px var(--neon-glow); } 50% { text-shadow: 0 0 30px var(--neon-blue); } }
 
-/* --- HEADER (BlinkMail Left, Contact Us Right) --- */
+/* --- HEADER --- */
 .top-navbar {
     display: flex; justify-content: space-between; align-items: center; 
     padding: 15px 5%; background: var(--bg-panel); border-bottom: 1px solid rgba(255,255,255,0.05);
@@ -34,21 +35,21 @@ body { background-color: var(--bg-base); color: var(--text-main); overflow-x: hi
 .brand-logo { display: flex; align-items: center; gap: 10px; font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; color: #fff; text-transform: uppercase; }
 .brand-icon { background: var(--primary-green); color: #fff; padding: 6px 10px; border-radius: 6px; transform: skew(-8deg); font-size: 1.2rem; }
 .contact-btn {
-    background: var(--yellow-pill); color: #000; padding: 8px 25px; border-radius: 30px; 
-    font-weight: 600; text-decoration: none; transition: 0.3s; box-shadow: 0 4px 15px rgba(255, 234, 0, 0.2);
+    background: var(--yellow-pill); color: #000; padding: 10px 25px; border-radius: 30px; 
+    font-weight: 700; text-decoration: none; transition: 0.3s; box-shadow: 0 4px 15px rgba(255, 234, 0, 0.2);
 }
 .contact-btn:hover { box-shadow: 0 0 20px rgba(255, 234, 0, 0.6); transform: translateY(-2px); }
 
-/* --- HOME PAGE HERO (Restored) --- */
+/* --- HOME PAGE HERO --- */
 .home-wrapper {
     min-height: calc(100vh - 70px); display: flex; flex-direction: column; align-items: center; justify-content: center;
     text-align: center; padding: 20px;
     background: radial-gradient(circle at 50% 30%, rgba(0, 243, 255, 0.1) 0%, var(--bg-base) 60%);
 }
 .home-hero { animation: fadeIn 1s ease-out; z-index: 2; }
-.home-hero h1 { font-size: 5rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 10px; animation: textGlow 3s infinite; }
+.home-hero h1 { font-size: 5rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 15px; animation: textGlow 3s infinite; }
 .home-hero h1 span { color: var(--neon-blue); }
-.home-hero p { color: var(--text-muted); font-size: 1.1rem; max-width: 500px; margin: 0 auto 40px auto; line-height: 1.6; }
+.home-hero p { color: var(--text-muted); font-size: 1.1rem; font-weight: 500; max-width: 500px; margin: 0 auto 40px auto; line-height: 1.6; }
 
 .btn-premium {
     background: transparent; color: var(--neon-blue); border: 2px solid var(--neon-blue);
@@ -60,6 +61,47 @@ body { background-color: var(--bg-base); color: var(--text-main); overflow-x: hi
 /* --- INBOX PAGE --- */
 .inbox-wrapper { width: 100%; max-width: 800px; margin: 40px auto; padding: 0 20px; animation: fadeIn 0.6s ease-out; }
 
+/* 🪄 RESTORED EMAIL WIDGET (Matches your custom UI screenshot exactly) */
+.email-widget {
+    background: var(--bg-panel); 
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    padding: 30px;
+    max-width: 600px;
+    margin: 0 auto 30px auto;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+.widget-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 20px; color: var(--text-main); }
+.input-wrapper { background: var(--bg-base); border-radius: 14px; padding: 18px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.02); }
+.email-input { background: transparent; border: none; color: var(--text-main); width: 100%; text-align: center; font-size: 1.2rem; font-weight: 700; outline: none; letter-spacing: 0.5px;}
+
+/* 🪄 EXACT BUTTON MATCHES */
+.widget-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; max-width: 400px; margin: 0 auto; }
+
+.btn-qr { 
+    background: transparent; color: #fff; 
+    border: 1px solid rgba(0, 229, 255, 0.3); /* Hollow faint neon border */
+    padding: 16px 20px; border-radius: 14px; 
+    font-size: 1.1rem; font-weight: 700; cursor: pointer; 
+    display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; 
+}
+.btn-qr:hover { background: rgba(0, 229, 255, 0.05); border-color: var(--neon-blue); }
+
+.btn-copy { 
+    background: var(--neon-blue); color: #000; /* Solid Cyan */
+    border: none; padding: 16px 20px; border-radius: 14px; 
+    font-size: 1.1rem; font-weight: 700; cursor: pointer; 
+    display: flex; align-items: center; justify-content: center; gap: 8px; 
+    transition: 0.2s; 
+}
+.btn-copy:hover { transform: translateY(-2px); box-shadow: 0 5px 20px var(--neon-glow); }
+
+.widget-subtext { 
+    text-align: center; color: var(--text-muted); font-size: 0.9rem; font-weight: 500;
+    max-width: 550px; margin: 0 auto 40px auto; line-height: 1.6; 
+}
+
 /* Action Grid (Dim by default, Neon on hover/tap) */
 .action-grid {
     display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 30px;
@@ -67,12 +109,11 @@ body { background-color: var(--bg-base); color: var(--text-main); overflow-x: hi
 }
 .action-btn {
     background: var(--bg-panel); border: 1px solid var(--border-dim); color: var(--text-muted);
-    padding: 20px 10px; border-radius: 16px; font-size: 1.1rem; font-weight: 500; cursor: pointer;
+    padding: 20px 10px; border-radius: 16px; font-size: 1.1rem; font-weight: 600; cursor: pointer;
     display: flex; flex-direction: column; align-items: center; gap: 8px; transition: all 0.3s ease;
 }
 .action-btn i { font-size: 1.6rem; color: var(--text-muted); transition: 0.3s; }
 
-/* THE MAGIC NEON GLOW ON TAP */
 .action-btn:hover, .action-btn:active {
     background: var(--bg-glass); color: var(--neon-blue); border-color: var(--neon-blue);
     box-shadow: 0 0 25px var(--neon-glow); transform: translateY(-3px);
@@ -81,8 +122,8 @@ body { background-color: var(--bg-base); color: var(--text-main); overflow-x: hi
 
 /* Inbox Table */
 .inbox-box { background: var(--bg-panel); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-.inbox-title { background: #161922; padding: 15px 20px; font-weight: 700; font-size: 0.9rem; letter-spacing: 1px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;}
-.email-badge { background: rgba(255,255,255,0.05); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; color: var(--text-muted); }
+.inbox-title { background: #161922; padding: 18px 20px; font-weight: 800; font-size: 0.95rem; letter-spacing: 1px; display: flex; justify-content: space-between; align-items: center;}
+.email-badge { background: rgba(255,255,255,0.05); padding: 5px 12px; border-radius: 20px; font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
 .inbox-body { min-height: 250px; display: flex; flex-direction: column; justify-content: center; }
 
 /* INFINITE SPINNING ENVELOPE */
@@ -95,56 +136,20 @@ body { background-color: var(--bg-base); color: var(--text-main); overflow-x: hi
     border-radius: 50%; animation: infiniteSpin 1.5s linear infinite; opacity: 0.5; z-index: 1;
 }
 
-.empty-state h3 { color: var(--text-main); font-size: 1.3rem; margin-bottom: 5px; font-weight: 500; }
-.empty-state p { font-size: 0.9rem; }
+.empty-state h3 { color: var(--text-main); font-size: 1.3rem; margin-bottom: 5px; font-weight: 700; }
+.empty-state p { font-size: 0.95rem; font-weight: 500;}
 
 /* Messages */
 .message-row { padding: 18px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; gap: 5px; cursor: pointer; transition: 0.2s; }
 .message-row:hover { background: var(--bg-glass); border-left: 3px solid var(--neon-blue); }
-.msg-sender { font-weight: 600; color: var(--text-main); font-size: 0.95rem; }
-.msg-subject { color: var(--text-muted); font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.msg-sender { font-weight: 700; color: var(--text-main); font-size: 1rem; }
+.msg-subject { color: var(--text-muted); font-size: 0.9rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 /* --- SEO ARTICLE --- */
 .seo-article { max-width: 800px; margin: 60px auto; text-align: center; padding: 0 20px 50px 20px; }
-.seo-article h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 20px; color: var(--text-main); }
-.seo-article p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; }
+.seo-article h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 20px; color: var(--text-main); }
+.seo-article p { color: var(--text-muted); font-size: 1rem; font-weight: 500; line-height: 1.7; }
 
 @media (max-width: 600px) {
     .home-hero h1 { font-size: 3.5rem; }
-}
-
-/* --- RESTORED EMAIL WIDGET (Matches Pic 3) --- */
-.email-widget {
-    background: #1c1f2b; 
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 16px;
-    padding: 30px;
-    max-width: 600px;
-    margin: 0 auto 20px auto;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-.widget-title { font-size: 1.2rem; font-weight: 500; margin-bottom: 20px; color: var(--text-main); }
-.input-wrapper { background: #11131a; border-radius: 10px; padding: 15px; margin-bottom: 25px; }
-.email-input { background: transparent; border: none; color: var(--text-main); width: 100%; text-align: center; font-size: 1.3rem; font-weight: 700; outline: none; }
-.widget-buttons { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
-
-.btn-qr { 
-    background: #3b5c73; color: #fff; border: none; padding: 12px 30px; 
-    border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; 
-    display: flex; align-items: center; gap: 8px; transition: 0.2s; 
-}
-.btn-qr:hover { background: #4a7390; }
-
-.btn-copy { 
-    background: var(--primary-green); color: #fff; border: none; padding: 12px 30px; 
-    border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; 
-    display: flex; align-items: center; gap: 8px; 
-    box-shadow: 0 4px 20px rgba(0, 217, 139, 0.4); transition: 0.2s; 
-}
-.btn-copy:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(0, 217, 139, 0.6); }
-
-.widget-subtext { 
-    text-align: center; color: var(--text-muted); font-size: 0.9rem; 
-    max-width: 550px; margin: 0 auto 40px auto; line-height: 1.6; 
 }
