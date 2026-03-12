@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inbox | BlinkMail</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1 style="text-align: center; margin-bottom: 10px;">Blink<span style="color: var(--neon-blue);">Mail</span></h1>
+        
+        <div class="inbox-header">
+            <div class="email-display" id="current-email">Loading...</div>
+            <div style="display: flex; gap: 10px;">
+                <button id="copyBtn" class="btn btn-small" onclick="copyEmail()">Copy</button>
+                <button class="btn btn-small" onclick="window.location.href='/'">New ♻️</button>
+            </div>
+        </div>
+
+        <div class="message-list" id="message-list">
+            <div style="text-align: center; color: #888; padding: 40px;">
+                Connecting to secure server... 💀
+            </div>
+        </div>
+    </div>
+    <script src="/static/script.js"></script>
+</body>
+</html>
