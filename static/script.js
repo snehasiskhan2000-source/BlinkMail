@@ -1,4 +1,4 @@
-// Prevent accidental form submissions or default reloads
+// This function STOPS the page from reloading when you click a button
 function preventReload(e) {
     if (e) e.preventDefault();
 }
@@ -32,12 +32,8 @@ function copyEmail(e) {
     const btn = document.getElementById('copyBtn');
     if(btn) {
         btn.innerHTML = '<i class="fa-solid fa-check" style="color: var(--neon-blue);"></i> Copied!';
-        btn.style.borderColor = "var(--neon-blue)";
-        btn.style.boxShadow = "0 0 20px var(--neon-glow)";
         setTimeout(() => { 
             btn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy'; 
-            btn.style.borderColor = "var(--border-dim)";
-            btn.style.boxShadow = "none";
         }, 2000);
     }
 }
@@ -75,7 +71,7 @@ async function fetchEmails(e) {
         messages.reverse().forEach(msg => {
             list.innerHTML += `
                 <div class="message-row">
-                    <div class="msg-sender"><i class="fa-solid fa-circle-user" style="color:var(--neon-blue); margin-right:8px;"></i>${msg.sender}</div>
+                    <div class="msg-sender">${msg.sender}</div>
                     <div class="msg-subject"><span style="color:#fff;">${msg.subject}</span> - ${msg.text.substring(0, 50)}...</div>
                 </div>
             `;
@@ -85,9 +81,8 @@ async function fetchEmails(e) {
     }
 }
 
-// Ensure index.html doesn't crash if it loads script.js
+// Ensure it starts polling seamlessly in the background
 if (window.location.pathname.startsWith('/inbox/')) {
     fetchEmails();
-    // Refresh seamlessly in the background every 4 seconds
     setInterval(() => fetchEmails(), 4000); 
 }
