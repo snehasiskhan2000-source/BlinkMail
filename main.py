@@ -24,7 +24,9 @@ NAMES = [
     "paula", "quinn", "roman", "scott", "tanya", "vance", "wendy"
 ]
 
+# 🪄 Added @app.head to accept UptimeRobot pings!
 @app.get("/")
+@app.head("/")
 async def home():
     """Serves the Premium Home Page"""
     return FileResponse("static/index.html")
@@ -37,13 +39,8 @@ async def view_inbox(email: str):
 @app.get("/api/generate")
 async def generate_email():
     """Generates a realistic BlinkMail address 💀"""
-    # Pick a random 5-letter name
     name = random.choice(NAMES)
-    
-    # Generate exactly 3 random numbers
     numbers = ''.join(random.choice(string.digits) for _ in range(3))
-    
-    # Combine with the new subdomain!
     email = f"{name}{numbers}@blinkmail.techbittu.co.uk"
     return {"email": email}
 
@@ -71,10 +68,13 @@ async def receive_email(email: IncomingEmail):
     })
     return {"status": "success"}
 
+# 🪄 Added @app.head to accept UptimeRobot pings!
 @app.get("/ping")
+@app.head("/ping")
 async def ping():
     return {"status": "BlinkMail is alive 💀"}
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))
     uvicorn.run(app, host="0.0.0.0", port=port)
+    
