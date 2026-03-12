@@ -1,30 +1,24 @@
-
-// Function for Home Page
 async function generateAndRedirect() {
     const btn = document.getElementById('generateBtn');
-    if(btn) btn.innerHTML = 'Generating... <i class="fa-solid fa-spinner fa-spin"></i>';
+    if(btn) btn.innerHTML = 'Generating... <i class="fa-solid fa-circle-notch fa-spin"></i>';
     
     try {
         const response = await fetch('/api/generate');
         const data = await response.json();
         window.location.href = `/inbox/${data.email}`;
     } catch (error) {
-        console.error("Failed to generate", error);
         if(btn) btn.innerHTML = 'Error. Try Again.';
     }
 }
 
-// Function for Inbox Page
 function copyEmail() {
     const emailInput = document.getElementById('current-email-input');
     if(!emailInput) return;
     
-    // Select and Copy
     emailInput.select();
     emailInput.setSelectionRange(0, 99999); 
     navigator.clipboard.writeText(emailInput.value);
     
-    // Animate Button
     const btn1 = document.getElementById('copyBtn1');
     if(btn1) {
         const originalText = btn1.innerHTML;
@@ -48,23 +42,25 @@ async function fetchEmails() {
         const list = document.getElementById('message-list');
         
         if (messages.length === 0) {
-            // Keep the empty state design
+            // EXACT Custom Empty State Animation
             list.innerHTML = `
                 <div class="empty-state">
-                    <i class="fa-solid fa-rotate-right fa-spin" style="font-size:3rem; color:#e0e4eb; margin-bottom:20px;"></i>
+                    <div class="anim-wrapper">
+                        <i class="fa-solid fa-envelope anim-envelope"></i>
+                        <div class="anim-ring"></div>
+                    </div>
                     <h3>Your inbox is empty</h3>
                     <p>Waiting for incoming emails...</p>
                 </div>`;
             return;
         }
 
-        // Render received emails
         list.innerHTML = '';
         messages.reverse().forEach(msg => {
             list.innerHTML += `
                 <div class="message-row">
-                    <div class="msg-sender"><i class="fa-regular fa-circle-user" style="color:var(--primary-green); margin-right:5px;"></i> ${msg.sender}</div>
-                    <div class="msg-subject">${msg.subject} <span style="color:#8c92a5; margin-left:10px; font-size:0.85rem;">- ${msg.text.substring(0, 40)}...</span></div>
+                    <div class="msg-sender">${msg.sender}</div>
+                    <div class="msg-subject"><span style="color:#fff;">${msg.subject}</span> - ${msg.text.substring(0, 50)}...</div>
                 </div>
             `;
         });
@@ -73,7 +69,6 @@ async function fetchEmails() {
     }
 }
 
-// Start polling if we are on the inbox page
 if (window.location.pathname.startsWith('/inbox/')) {
     fetchEmails();
     setInterval(fetchEmails, 3000); 
