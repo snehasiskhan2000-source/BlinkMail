@@ -153,3 +153,41 @@ body { background-color: var(--bg-base); color: var(--text-main); overflow-x: hi
 @media (max-width: 600px) {
     .home-hero h1 { font-size: 3.5rem; }
 }
+
+/* --- UPDATED HEADER BUTTON (Matches Home Page) --- */
+.contact-btn {
+    background: transparent; color: var(--neon-blue); border: 2px solid var(--neon-blue);
+    padding: 10px 25px; border-radius: 30px; font-weight: 700; text-decoration: none; 
+    transition: 0.3s; box-shadow: 0 0 15px var(--neon-glow); font-size: 0.95rem;
+}
+.contact-btn:hover { 
+    background: var(--neon-blue); color: #000; 
+    box-shadow: 0 0 30px var(--neon-blue); transform: scale(1.05); 
+}
+
+/* --- QR CODE MODAL (Incredible Animation) --- */
+.qr-modal {
+    display: none; position: fixed; z-index: 1000; left: 0; top: 0; 
+    width: 100%; height: 100%; background-color: rgba(3, 3, 5, 0.8); 
+    backdrop-filter: blur(8px); justify-content: center; align-items: center;
+    opacity: 0; transition: opacity 0.3s ease;
+}
+.qr-modal.show { display: flex; opacity: 1; }
+.qr-content {
+    background: var(--bg-panel); border: 2px solid var(--neon-blue);
+    border-radius: 20px; padding: 40px; text-align: center; position: relative;
+    box-shadow: 0 0 40px var(--neon-glow);
+    transform: scale(0.7); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.qr-modal.show .qr-content { transform: scale(1); }
+.close-qr {
+    position: absolute; top: 15px; right: 20px; color: var(--text-muted); 
+    font-size: 2rem; cursor: pointer; transition: 0.2s;
+}
+.close-qr:hover { color: var(--neon-blue); transform: rotate(90deg); }
+.qr-image-wrapper {
+    background: #fff; padding: 15px; border-radius: 10px; margin: 20px auto; 
+    display: inline-block; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
+.qr-content h3 { color: var(--text-main); font-size: 1.5rem; }
+.qr-content p { color: var(--text-muted); font-size: 0.9rem; margin-top: 10px; }
