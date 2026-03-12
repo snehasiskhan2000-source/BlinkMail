@@ -9,11 +9,20 @@ import uvicorn
 
 app = FastAPI()
 
-# Mount the static folder for CSS and JS
+# Mount the static folder for CSS, JS, and HTML
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Ephemeral Database for BlinkMail
 inbox_db = {}
+
+# 🪄 THE MASTER LIST: Real 5-letter names for premium generation
+NAMES = [
+    "james", "david", "chris", "sarah", "maria", "kevin", "jason", 
+    "peter", "lucas", "simon", "frank", "harry", "julia", "alice", 
+    "steve", "brian", "clara", "diana", "elena", "felix", "grace", 
+    "henry", "irene", "jacob", "karen", "laura", "mason", "nolan", 
+    "paula", "quinn", "roman", "scott", "tanya", "vance", "wendy"
+]
 
 @app.get("/")
 async def home():
@@ -22,15 +31,20 @@ async def home():
 
 @app.get("/inbox/{email}")
 async def view_inbox(email: str):
-    """Serves the Inbox Page (frontend JS will parse the URL)"""
+    """Serves the Inbox Page"""
     return FileResponse("static/inbox.html")
 
 @app.get("/api/generate")
 async def generate_email():
-    """Generates the random BlinkMail address"""
-    chars = string.ascii_lowercase + string.digits
-    random_str = ''.join(random.choice(chars) for _ in range(10))
-    email = f"{random_str}@techbittu.co.uk"
+    """Generates a realistic BlinkMail address 💀"""
+    # Pick a random 5-letter name
+    name = random.choice(NAMES)
+    
+    # Generate exactly 3 random numbers
+    numbers = ''.join(random.choice(string.digits) for _ in range(3))
+    
+    # Combine with the new subdomain!
+    email = f"{name}{numbers}@blinkmail.techbittu.co.uk"
     return {"email": email}
 
 @app.get("/api/messages/{email}")
@@ -64,4 +78,3 @@ async def ping():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))
     uvicorn.run(app, host="0.0.0.0", port=port)
-    
