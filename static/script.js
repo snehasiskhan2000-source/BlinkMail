@@ -2,7 +2,6 @@ function preventReload(e) {
     if (e) e.preventDefault();
 }
 
-// Seamlessly generate a new email and stay in the inbox app!
 async function changeEmail(e) {
     preventReload(e);
     const btn = e.currentTarget;
@@ -12,7 +11,6 @@ async function changeEmail(e) {
     try {
         const response = await fetch('/api/generate');
         const data = await response.json();
-        // Redirect seamlessly to the new inbox
         window.location.href = `/inbox/${data.email}`;
     } catch (error) {
         btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Error';
@@ -62,14 +60,12 @@ function copyEmail(e) {
     }
 }
 
-// QR CODE LOGIC
 function showQR(e) {
     preventReload(e);
     const emailInput = document.getElementById('current-email-input');
     if(!emailInput || !emailInput.value) return;
     
     const qrImg = document.getElementById('qrImage');
-    // Call external API to generate a working QR code instantly
     qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=mailto:${emailInput.value}`;
     
     const modal = document.getElementById('qrModal');
@@ -81,7 +77,6 @@ function closeQR() {
     modal.classList.remove('show');
 }
 
-// Close QR when clicking outside
 window.onclick = function(event) {
     const modal = document.getElementById('qrModal');
     if (event.target === modal) {
@@ -108,27 +103,38 @@ async function fetchEmails(e) {
         const list = document.getElementById('message-list');
         
         if (messages.length === 0) {
-            list.innerHTML = `
-                <div class="empty-state">
-                    <div class="spin-container">
-                        <i class="fa-solid fa-envelope"></i>
-                        <div class="spin-ring"></div>
-                    </div>
-                    <h3>Your inbox is empty</h3>
-                    <p>Waiting for incoming emails...</p>
-                </div>`;
+            // 🪄 THE FIX: Only draw the spinner IF it doesn't already exist!
+            // This stops the DOM from resetting and allows the animation to spin forever seamlessly.
+            if (!document.querySelector('.empty-state')) {
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <div class="spin-container">
+                            <i class="fa-solid fa-envelope"></i>
+                            <div class="spin-ring"></div>
+                        </div>
+                        <h3>Your inbox is empty</h3>
+                        <p>Waiting for incoming emails...</p>
+                    </div>`;
+            }
             return;
         }
 
-        list.innerHTML = '';
+        // If we have messages, overwrite the spinner and show them!
+        let newHTML = '';
         messages.reverse().forEach(msg => {
-            list.innerHTML += `
+            newHTML += `
                 <div class="message-row">
                     <div class="msg-sender"><i class="fa-solid fa-circle-user" style="color:var(--neon-blue); margin-right:8px;"></i>${msg.sender}</div>
                     <div class="msg-subject"><span style="color:#fff;">${msg.subject}</span> - ${msg.text.substring(0, 50)}...</div>
                 </div>
             `;
         });
+        
+        // Only update DOM if new messages arrived to prevent stutter
+        if (list.innerHTML !== newHTML) {
+            list.innerHTML = newHTML;
+        }
+
     } catch (error) {
         console.error("Failed to fetch", error);
     }
