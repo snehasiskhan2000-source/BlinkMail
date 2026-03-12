@@ -2,32 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Inbox | BlinkMail</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 
-    <div class="top-section">
-        <div class="brand"><i class="fa-solid fa-envelope"></i> BLINKMAIL</div>
-        
-        <div class="email-widget">
-            <h2>Your Temporary Email Address</h2>
-            <div class="input-wrapper">
-                <input type="text" id="current-email-input" class="email-input" readonly value="Loading...">
+    <div class="inbox-wrapper">
+        <div class="brand-header"><i class="fa-solid fa-envelope-open-text" style="color:var(--neon-blue); margin-right:10px;"></i> Blink<span>Mail</span></div>
+
+        <div class="email-panel">
+            <p>Your Temporary Email Address</p>
+            <div class="input-glass">
+                <input type="text" id="current-email-input" class="email-input" readonly value="Loading server...">
             </div>
-            <div class="widget-buttons">
-                <button class="btn-qr"><i class="fa-solid fa-qrcode"></i> QR code</button>
-                <button class="btn-copy" id="copyBtn1" onclick="copyEmail()"><i class="fa-solid fa-copy"></i> Copy</button>
+            <div class="btn-grid">
+                <button class="btn-glass"><i class="fa-solid fa-qrcode"></i> QR Code</button>
+                <button class="btn-glass active" id="copyBtn1" onclick="copyEmail()"><i class="fa-solid fa-copy"></i> Copy</button>
             </div>
         </div>
-        
-        <p class="subtext">Forget about spam, advertising mailings, hacking and attacking robots. Keep your real mailbox clean and secure. BlinkMail provides temporary, secure, anonymous, free, disposable email address.</p>
-    </div>
 
-    <div class="bottom-section">
-        
         <div class="action-row">
             <button class="action-btn" onclick="copyEmail()"><i class="fa-solid fa-copy"></i> Copy</button>
             <button class="action-btn" onclick="fetchEmails()"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
@@ -35,22 +30,11 @@
             <button class="action-btn" onclick="window.location.href='/'"><i class="fa-solid fa-xmark"></i> Delete</button>
         </div>
 
-        <div class="inbox-container">
-            <div class="inbox-header">INBOX</div>
+        <div class="inbox-box">
+            <div class="inbox-title">INBOX</div>
             <div class="inbox-body" id="message-list">
-                <div class="empty-state">
-                    <i class="fa-regular fa-envelope-open"></i>
-                    <h3>Your inbox is empty</h3>
-                    <p>Waiting for incoming emails</p>
                 </div>
-            </div>
         </div>
-
-        <div class="info-section">
-            <h2>What is Disposable Temporary E-mail?</h2>
-            <p><b>Disposable email</b> - is a free email service that allows to receive email at a temporary address that self-destructs after a certain time elapses. It is also known by names like : tempmail, 10minutemail, throwaway email, fake-mail, burner mail or trash-mail. Many forums, Wi-Fi owners, websites and blogs ask visitors to register before they can view content, post comments or download something. BlinkMail is the most advanced throwaway email service that helps you avoid spam and stay safe.</p>
-        </div>
-
     </div>
 
     <script src="/static/script.js"></script>
