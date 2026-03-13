@@ -37,12 +37,14 @@ async def home():
     return FileResponse("static/index.html")
 
 @app.get("/inbox/{email}")
-async def view_inbox(email: str):
+@app.get("/mailbox")
+async def view_mailbox():
+    """Serves the secure, cloaked Inbox Page"""
     return FileResponse("static/inbox.html")
 
-@app.get("/read/{email}/{index}")
-async def read_email(email: str, index: int):
-    """Serves the dedicated Email Reading Page"""
+@app.get("/message")
+async def view_message():
+    """Serves the secure, cloaked Reader Page"""
     return FileResponse("static/read.html")
     
 @app.get("/api/generate")
