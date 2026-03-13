@@ -40,6 +40,11 @@ async def home():
 async def view_inbox(email: str):
     return FileResponse("static/inbox.html")
 
+@app.get("/read/{email}/{index}")
+async def read_email(email: str, index: int):
+    """Serves the dedicated Email Reading Page"""
+    return FileResponse("static/read.html")
+    
 @app.get("/api/generate")
 async def generate_email():
     name = random.choice(NAMES)
