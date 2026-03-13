@@ -124,3 +124,30 @@ body { background-color: var(--bg-base); color: var(--text-main); overflow-x: hi
 .seo-article p { color: var(--text-muted); font-size: 1rem; font-weight: 500; line-height: 1.7; }
 
 @media (max-width: 600px) { .home-hero h1 { font-size: 3.5rem; } .action-grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* 🪄 SELF-DESTRUCT TIMER & EXPIRED MODAL */
+.timer-badge { 
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; 
+    font-size: 1.1rem; font-weight: 800; color: #ff0055; background: rgba(255, 0, 85, 0.05); 
+    border: 1px solid rgba(255, 0, 85, 0.3); padding: 10px 20px; border-radius: 30px; 
+    margin-bottom: 25px; box-shadow: 0 0 15px rgba(255, 0, 85, 0.2); letter-spacing: 2px;
+}
+.timer-badge i { animation: textGlow 2s infinite alternate; }
+
+.expired-content {
+    background: var(--bg-panel); border: 2px solid #ff0055;
+    border-radius: 20px; padding: 40px; text-align: center; position: relative;
+    box-shadow: 0 0 50px rgba(255, 0, 85, 0.3);
+    transform: scale(0.7); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    width: 100%; max-width: 400px;
+}
+.qr-modal.show .expired-content { transform: scale(1); }
+.expired-icon { font-size: 3.5rem; color: #ff0055; margin-bottom: 20px; filter: drop-shadow(0 0 15px #ff0055); }
+
+.btn-danger {
+    background: transparent; color: #ff0055; border: 2px solid #ff0055;
+    padding: 18px 30px; font-size: 1.1rem; font-weight: 700; border-radius: 50px;
+    cursor: pointer; transition: 0.3s; box-shadow: 0 0 20px rgba(255, 0, 85, 0.2); 
+    width: 100%; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.btn-danger:hover { background: #ff0055; color: #fff; box-shadow: 0 0 40px #ff0055; transform: scale(1.05); }
