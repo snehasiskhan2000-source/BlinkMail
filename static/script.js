@@ -1,5 +1,3 @@
-let currentMessages = []; // 🪄 Securely holds email data to prevent newline crashes
-
 function preventReload(e) { if (e) e.preventDefault(); }
 
 async function changeEmail(e) {
@@ -65,18 +63,16 @@ function showQR(e) {
 }
 function closeQR() { document.getElementById('qrModal').classList.remove('show'); }
 
-// 🪄 FLAWLESS EMAIL READER MODAL LOGIC
-function openEmail(index) {
-    const msg = currentMessages[index]; // Fetch directly from secure memory!
-    
-    // Clean tags so HTML doesn't break
-    const cleanSender = msg.sender.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    const cleanSubject = msg.subject.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    
-    document.getElementById('readerSender').innerText = cleanSender;
-    document.getElementById('readerSubject').innerText = cleanSubject || "No Subject";
-    document.getElementById('readerBody').innerText = msg.text || "No Content";
-    
+// 🪄 BULLETPROOF MODAL LOGIC (Extracts directly from the HTML element)
+function openEmailFromData(element) {
+    const sender = element.getAttribute('data-sender');
+    const subject = element.getAttribute('data-subject');
+    const body = decodeURIComponent(element.getAttribute('data-body')); // Securely decodes the email text
+
+    document.getElementById('readerSender').innerText = sender;
+    document.getElementById('readerSubject').innerText = subject || "No Subject";
+    document.getElementById('readerBody').innerText = body || "No Content";
+
     document.getElementById('emailModal').classList.add('show');
 }
 function closeEmail() { document.getElementById('emailModal').classList.remove('show'); }
@@ -102,34 +98,40 @@ async function fetchEmails(e) {
     try {
         const response = await fetch(`/api/messages/${emailAddress}`);
         const messages = await response.json();
+        
         const emptyState = document.getElementById('empty-state');
         const emailsContainer = document.getElementById('emails-container');
+        const messageList = document.getElementById('message-list'); // The parent container
         
         if (messages.length === 0) {
             emptyState.style.display = 'block';
             emailsContainer.innerHTML = '';
+            // Force center layout for the spinner via JS!
+            if (messageList) messageList.style.justifyContent = 'center';
             return;
         }
 
         emptyState.style.display = 'none';
         
-        // Save to global array for the modal
-        currentMessages = messages.reverse(); 
+        // 🪄 THE FIX: Force Top Alignment via JS! Bypasses cached CSS completely.
+        if (messageList) messageList.style.justifyContent = 'flex-start';
         
         let newHTML = '';
-        currentMessages.forEach((msg, index) => {
-            // Clean up sender for the preview list
-            const cleanSender = msg.sender.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-            const cleanSubject = msg.subject.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        messages.reverse().forEach(msg => {
+            // Encode the data safely so it can't break the HTML tags
+            const safeSender = msg.sender.replace(/"/g, '&quot;').replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            const safeSubject = msg.subject.replace(/"/g, '&quot;').replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            const safeBody = encodeURIComponent(msg.text); // Secures the full body text
 
+            // Inject the data directly into the row via data-* attributes
             newHTML += `
-                <div class="message-row" onclick="openEmail(${index})">
+                <div class="message-row" data-sender="${safeSender}" data-subject="${safeSubject}" data-body="${safeBody}" onclick="openEmailFromData(this)">
                     <div class="msg-left">
                         <div class="msg-dot"></div>
                         <div class="msg-content">
-                            <div class="msg-sender">${cleanSender}</div>
+                            <div class="msg-sender">${safeSender}</div>
                             <div class="msg-email">${emailAddress}</div>
-                            <div class="msg-subject">${cleanSubject}</div>
+                            <div class="msg-subject">${safeSubject}</div>
                         </div>
                     </div>
                     <div class="msg-arrow"><i class="fa-solid fa-angle-right"></i></div>
@@ -148,4 +150,4 @@ async function fetchEmails(e) {
 if (window.location.pathname.startsWith('/inbox/')) {
     fetchEmails();
     setInterval(() => fetchEmails(), 4000); 
-}
+                                }
