@@ -74,15 +74,38 @@ body { background-color: var(--bg-base); color: var(--text-main); overflow-x: hi
 .msg-subject { color: var(--text-main); font-size: 0.95rem; font-weight: 500; margin-top: 4px; }
 .msg-arrow { color: var(--text-muted); font-size: 1.2rem; }
 
-/* 🪄 THE NEW READ PAGE STYLING */
-.read-header { padding: 30px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-.read-subject { font-size: 1.6rem; font-weight: 800; color: var(--text-main); margin-bottom: 15px; }
-.read-meta { display: flex; flex-direction: column; gap: 5px; }
-.read-sender { font-size: 1rem; color: var(--primary-green); font-weight: 700; }
-.read-to { font-size: 0.9rem; color: var(--text-muted); font-weight: 500; }
-.read-body { padding: 30px; font-size: 1.05rem; color: #e0e4eb; line-height: 1.8; white-space: pre-wrap; word-break: break-word; min-height: 200px; }
-.btn-back { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--text-muted); border: 1px solid var(--border-dim); padding: 10px 20px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.2s; margin-bottom: 20px; text-decoration: none; }
-.btn-back:hover { background: var(--bg-glass); color: var(--neon-blue); border-color: var(--neon-blue); }
+/* 🪄 THE PREMIUM READ PAGE STYLING (Matches Screenshot 3) */
+.btn-back-header { 
+    display: flex; align-items: center; gap: 10px; color: var(--text-main); 
+    text-decoration: none; font-weight: 800; font-size: 1.1rem; transition: 0.2s; 
+    padding: 20px 25px; background: #161922; border-bottom: 1px solid rgba(255,255,255,0.05); 
+    letter-spacing: 1px; text-transform: uppercase;
+}
+.btn-back-header:hover { color: var(--neon-blue); }
+
+.read-header-top { display: flex; align-items: center; gap: 15px; padding: 25px; }
+.profile-avatar { 
+    width: 55px; height: 55px; border-radius: 50%; border: 2px solid var(--primary-green); 
+    display: flex; align-items: center; justify-content: center; font-size: 1.3rem; 
+    font-weight: 800; color: var(--primary-green); background: rgba(0, 217, 139, 0.1); 
+    letter-spacing: 1px;
+}
+.read-sender-info { display: flex; flex-direction: column; gap: 4px; }
+.read-name { font-size: 1.15rem; font-weight: 700; color: var(--text-main); }
+.read-email-address { font-size: 0.95rem; color: var(--text-muted); font-weight: 500; }
+
+.read-info-row { 
+    padding: 15px 25px; border-top: 1px solid rgba(255,255,255,0.05); 
+    font-size: 0.95rem; color: var(--text-muted); display: flex; align-items: center; gap: 10px; 
+}
+.read-info-label { color: var(--text-muted); font-weight: 500; }
+.read-info-value { color: var(--text-main); font-weight: 600; }
+
+.read-body { 
+    padding: 30px 25px; font-size: 1.05rem; color: #e0e4eb; line-height: 1.8; 
+    white-space: pre-wrap; word-break: break-word; min-height: 200px; 
+    border-top: 1px solid rgba(255,255,255,0.05); 
+}
 
 /* QR CODE MODAL */
 .qr-modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(3, 3, 5, 0.8); backdrop-filter: blur(8px); justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease; padding: 20px; }
