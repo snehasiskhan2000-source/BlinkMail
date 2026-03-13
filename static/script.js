@@ -1,8 +1,7 @@
-let emailFetchInterval; // Global variable so we can stop it when it expires!
+let emailFetchInterval; 
 
 function preventReload(e) { if (e) e.preventDefault(); }
 
-// 🪄 ENGINE: Smart Name Extractor
 function parseSender(senderString) {
     let name = senderString;
     let email = senderString;
@@ -27,12 +26,11 @@ function cleanEmailBody(text) {
                .trim();
 }
 
-// 🪄 ENGINE: The 10-Minute Self Destruct Logic
+// 🪄 SECURE TIMER LOGIC
 function startSelfDestructTimer(emailAddress) {
     const expiryKey = `blinkmail_expiry_${emailAddress}`;
     let expiryTime = localStorage.getItem(expiryKey);
     
-    // If it's a brand new email, set the death clock to 10 minutes from exactly now
     if (!expiryTime) {
         expiryTime = Date.now() + 10 * 60 * 1000;
         localStorage.setItem(expiryKey, expiryTime);
@@ -45,14 +43,16 @@ function startSelfDestructTimer(emailAddress) {
         const distance = expiryTime - now;
 
         if (distance <= 0) {
-            // TIME IS UP. KILL IT.
             clearInterval(countdown);
-            clearInterval(emailFetchInterval); // Stop fetching emails from backend
+            clearInterval(emailFetchInterval); 
             if (timerDisplay) timerDisplay.innerText = "00:00";
-            document.getElementById('expiredModal').classList.add('show');
-            localStorage.removeItem(expiryKey); // Clean up memory
+            
+            const modal = document.getElementById('expiredModal');
+            if (modal) modal.classList.add('show');
+            
+            localStorage.removeItem(expiryKey);
+            localStorage.removeItem('blinkmail_current'); // Wipe access
         } else {
-            // Math for minutes and seconds
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
             if (timerDisplay) {
@@ -62,6 +62,7 @@ function startSelfDestructTimer(emailAddress) {
     }, 1000);
 }
 
+// 🪄 GHOST MODE ROUTING LOGIC
 async function changeEmail(e) {
     preventReload(e);
     const btn = e.currentTarget;
@@ -70,7 +71,10 @@ async function changeEmail(e) {
     try {
         const response = await fetch('/api/generate');
         const data = await response.json();
-        window.location.href = `/inbox/${data.email}`;
+        // Securely store the new email and instantly reset the timer
+        localStorage.setItem('blinkmail_current', data.email);
+        localStorage.setItem(`blinkmail_expiry_${data.email}`, Date.now() + 10 * 60 * 1000);
+        window.location.href = `/mailbox`; // Cloaked URL
     } catch (error) {
         btn.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Error';
         setTimeout(() => { btn.innerHTML = originalHTML; }, 2000);
@@ -83,10 +87,22 @@ async function generateAndRedirect() {
     try {
         const response = await fetch('/api/generate');
         const data = await response.json();
-        window.location.href = `/inbox/${data.email}`;
+        // Securely store the new email
+        localStorage.setItem('blinkmail_current', data.email);
+        localStorage.setItem(`blinkmail_expiry_${data.email}`, Date.now() + 10 * 60 * 1000);
+        window.location.href = `/mailbox`; // Cloaked URL
     } catch (error) {
         if(btn) btn.innerHTML = 'Error. Try Again.';
     }
+}
+
+// 🪄 MANUAL REFRESH BUTTON LOGIC
+async function forceRefresh(e) {
+    preventReload(e);
+    const icon = e.currentTarget.querySelector('i');
+    if(icon) icon.classList.add('fa-spin'); // Add spinning animation
+    await fetchEmails(); // Force immediate check
+    if(icon) setTimeout(() => icon.classList.remove('fa-spin'), 1000); // Stop spinning
 }
 
 function copyEmail(e) {
@@ -130,11 +146,13 @@ window.onclick = function(event) {
     if (event.target === qrModal) closeQR();
 }
 
-async function fetchEmails(e) {
-    if(e) preventReload(e);
-    const urlParts = window.location.pathname.split('/');
-    const emailAddress = urlParts[urlParts.length - 1];
-    if(!emailAddress || !emailAddress.includes('@')) return;
+async function fetchEmails() {
+    // 🪄 Read securely from local storage
+    const emailAddress = localStorage.getItem('blinkmail_current');
+    if(!emailAddress) {
+        window.location.href = '/'; // Kick out intruders
+        return;
+    }
     
     const badgeElement = document.getElementById('current-email-display');
     if(badgeElement) badgeElement.innerText = emailAddress;
@@ -149,12 +167,12 @@ async function fetchEmails(e) {
         const emailsContainer = document.getElementById('emails-container');
         
         if (messages.length === 0) {
-            emptyState.style.display = 'block';
-            emailsContainer.innerHTML = '';
+            if(emptyState) emptyState.style.display = 'block';
+            if(emailsContainer) emailsContainer.innerHTML = '';
             return;
         }
 
-        emptyState.style.display = 'none';
+        if(emptyState) emptyState.style.display = 'none';
         
         let newHTML = '';
         messages.reverse().forEach((msg, index) => {
@@ -163,8 +181,9 @@ async function fetchEmails(e) {
             const safeEmail = parsed.email.replace(/</g, "&lt;").replace(/>/g, "&gt;");
             const safeSubject = msg.subject.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
+            // 🪄 Cloaked redirect using URL parameters
             newHTML += `
-                <div class="message-row" onclick="window.location.href='/read/${emailAddress}/${index}'">
+                <div class="message-row" onclick="window.location.href='/message?id=${index}'">
                     <div class="msg-left">
                         <div class="msg-dot"></div>
                         <div class="msg-content">
@@ -178,7 +197,7 @@ async function fetchEmails(e) {
             `;
         });
         
-        if (emailsContainer.innerHTML !== newHTML) {
+        if (emailsContainer && emailsContainer.innerHTML !== newHTML) {
             emailsContainer.innerHTML = newHTML;
         }
     } catch (error) {
@@ -187,11 +206,18 @@ async function fetchEmails(e) {
 }
 
 async function loadReadPage() {
-    const urlParts = window.location.pathname.split('/');
-    const index = parseInt(urlParts.pop());
-    const emailAddress = urlParts.pop();
+    // 🪄 Secure access checking
+    const emailAddress = localStorage.getItem('blinkmail_current');
+    if(!emailAddress) {
+        window.location.href = '/'; 
+        return;
+    }
 
-    document.getElementById('backBtn').href = `/inbox/${emailAddress}`;
+    // Extract message ID from Cloaked URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const index = urlParams.get('id');
+
+    document.getElementById('backBtn').href = `/mailbox`;
 
     try {
         const response = await fetch(`/api/messages/${emailAddress}`);
@@ -230,19 +256,16 @@ async function loadReadPage() {
     }
 }
 
-// 🪄 INIT LOGIC
-if (window.location.pathname.startsWith('/inbox/')) {
-    const urlParts = window.location.pathname.split('/');
-    const emailAddress = urlParts[urlParts.length - 1];
-    
-    // Kick off the countdown!
-    if (emailAddress && emailAddress.includes('@')) {
+// 🪄 SECURE INIT LOGIC
+if (window.location.pathname.startsWith('/mailbox')) {
+    const emailAddress = localStorage.getItem('blinkmail_current');
+    if (!emailAddress) {
+        window.location.href = '/'; // Kick intruders out instantly
+    } else {
         startSelfDestructTimer(emailAddress);
+        fetchEmails();
+        emailFetchInterval = setInterval(() => fetchEmails(), 4000); 
     }
-    
-    fetchEmails();
-    emailFetchInterval = setInterval(() => fetchEmails(), 4000); 
-
-} else if (window.location.pathname.startsWith('/read/')) {
+} else if (window.location.pathname.startsWith('/message')) {
     loadReadPage();
 }
