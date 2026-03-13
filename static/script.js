@@ -63,25 +63,9 @@ function showQR(e) {
 }
 function closeQR() { document.getElementById('qrModal').classList.remove('show'); }
 
-// 🪄 BULLETPROOF MODAL LOGIC (Extracts directly from the HTML element)
-function openEmailFromData(element) {
-    const sender = element.getAttribute('data-sender');
-    const subject = element.getAttribute('data-subject');
-    const body = decodeURIComponent(element.getAttribute('data-body')); // Securely decodes the email text
-
-    document.getElementById('readerSender').innerText = sender;
-    document.getElementById('readerSubject').innerText = subject || "No Subject";
-    document.getElementById('readerBody').innerText = body || "No Content";
-
-    document.getElementById('emailModal').classList.add('show');
-}
-function closeEmail() { document.getElementById('emailModal').classList.remove('show'); }
-
 window.onclick = function(event) {
     const qrModal = document.getElementById('qrModal');
-    const emailModal = document.getElementById('emailModal');
     if (event.target === qrModal) closeQR();
-    if (event.target === emailModal) closeEmail();
 }
 
 async function fetchEmails(e) {
@@ -101,31 +85,23 @@ async function fetchEmails(e) {
         
         const emptyState = document.getElementById('empty-state');
         const emailsContainer = document.getElementById('emails-container');
-        const messageList = document.getElementById('message-list'); // The parent container
         
         if (messages.length === 0) {
             emptyState.style.display = 'block';
             emailsContainer.innerHTML = '';
-            // Force center layout for the spinner via JS!
-            if (messageList) messageList.style.justifyContent = 'center';
             return;
         }
 
         emptyState.style.display = 'none';
         
-        // 🪄 THE FIX: Force Top Alignment via JS! Bypasses cached CSS completely.
-        if (messageList) messageList.style.justifyContent = 'flex-start';
-        
         let newHTML = '';
-        messages.reverse().forEach(msg => {
-            // Encode the data safely so it can't break the HTML tags
-            const safeSender = msg.sender.replace(/"/g, '&quot;').replace(/</g, "&lt;").replace(/>/g, "&gt;");
-            const safeSubject = msg.subject.replace(/"/g, '&quot;').replace(/</g, "&lt;").replace(/>/g, "&gt;");
-            const safeBody = encodeURIComponent(msg.text); // Secures the full body text
+        // 🪄 THE FIX: We now generate a direct URL to the new read page!
+        messages.reverse().forEach((msg, index) => {
+            const safeSender = msg.sender.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            const safeSubject = msg.subject.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-            // Inject the data directly into the row via data-* attributes
             newHTML += `
-                <div class="message-row" data-sender="${safeSender}" data-subject="${safeSubject}" data-body="${safeBody}" onclick="openEmailFromData(this)">
+                <div class="message-row" onclick="window.location.href='/read/${emailAddress}/${index}'">
                     <div class="msg-left">
                         <div class="msg-dot"></div>
                         <div class="msg-content">
@@ -147,7 +123,38 @@ async function fetchEmails(e) {
     }
 }
 
+// 🪄 LOGIC FOR THE NEW READ PAGE
+async function loadReadPage() {
+    const urlParts = window.location.pathname.split('/');
+    const index = parseInt(urlParts.pop());
+    const emailAddress = urlParts.pop();
+
+    document.getElementById('current-email-display').innerText = emailAddress;
+    document.getElementById('backBtn').href = `/inbox/${emailAddress}`;
+
+    try {
+        const response = await fetch(`/api/messages/${emailAddress}`);
+        const messages = await response.json();
+        const reversedMessages = messages.reverse();
+        const msg = reversedMessages[index];
+
+        if(msg) {
+            document.getElementById('readSender').innerText = msg.sender;
+            document.getElementById('readTo').innerText = `To: ${emailAddress}`;
+            document.getElementById('readSubject').innerText = msg.subject || "No Subject";
+            document.getElementById('readBody').innerText = msg.text || "No Content";
+        } else {
+            document.getElementById('readBody').innerText = "Email not found.";
+        }
+    } catch (error) {
+        document.getElementById('readBody').innerText = "Failed to load email.";
+    }
+}
+
+// ROUTER 
 if (window.location.pathname.startsWith('/inbox/')) {
     fetchEmails();
     setInterval(() => fetchEmails(), 4000); 
-                                }
+} else if (window.location.pathname.startsWith('/read/')) {
+    loadReadPage();
+}
