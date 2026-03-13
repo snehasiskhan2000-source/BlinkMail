@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Read Email | BlinkMail</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/style.css?v=redirect">
+</head>
+<body>
+    <div class="top-navbar">
+        <div class="brand-logo" onclick="window.location.href='/'" style="cursor: pointer;" title="Go to Home">
+            <span class="brand-icon"><i class="fa-solid fa-envelope-circle-check"></i></span>
+            BLINKMAIL
+        </div>
+        <a href="https://t.me/Snehasiskhan" target="_blank" class="contact-btn">Contact Us</a>
+    </div>
+
+    <div class="inbox-wrapper">
+        <a href="#" id="backBtn" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Back to Inbox</a>
+
+        <div class="inbox-box">
+            <div class="inbox-title">
+                MESSAGE READER <span class="email-badge" id="current-email-display">Loading...</span>
+            </div>
+            
+            <div class="inbox-body" style="min-height: auto;">
+                <div class="read-header">
+                    <div class="read-subject" id="readSubject">Loading Subject...</div>
+                    <div class="read-meta">
+                        <div class="read-sender" id="readSender">Loading Sender...</div>
+                        <div class="read-to" id="readTo">To: Loading...</div>
+                    </div>
+                </div>
+                <div class="read-body" id="readBody">
+                    <div style="text-align:center; padding: 40px;"><i class="fa-solid fa-circle-notch fa-spin fa-2x"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/static/script.js?v=redirect"></script>
+</body>
+</html>
