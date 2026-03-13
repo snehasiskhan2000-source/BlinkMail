@@ -6,17 +6,16 @@
     --bg-panel: #0d0f14;
     --bg-glass: rgba(0, 243, 255, 0.03);
     --border-dim: #222532;
-    --neon-blue: #00e5ff; /* Matched to your exact solid cyan */
+    --neon-blue: #00e5ff; 
     --neon-glow: rgba(0, 229, 255, 0.4);
     --primary-green: #00d98b; 
-    --yellow-pill: #ffea00;
     --text-main: #ffffff;
     --text-muted: #888c99;
 }
 
 * { 
     box-sizing: border-box; margin: 0; padding: 0; 
-    font-family: 'Montserrat', sans-serif; /* 🪄 Premium Font Applied */
+    font-family: 'Montserrat', sans-serif; 
     -webkit-tap-highlight-color: transparent; 
 }
 
@@ -32,13 +31,18 @@ body { background-color: var(--bg-base); color: var(--text-main); overflow-x: hi
     display: flex; justify-content: space-between; align-items: center; 
     padding: 15px 5%; background: var(--bg-panel); border-bottom: 1px solid rgba(255,255,255,0.05);
 }
-.brand-logo { display: flex; align-items: center; gap: 10px; font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; color: #fff; text-transform: uppercase; }
+.brand-logo { display: flex; align-items: center; gap: 10px; font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; color: #fff; text-transform: uppercase; transition: 0.2s; }
+.brand-logo:hover { transform: scale(1.02); }
 .brand-icon { background: var(--primary-green); color: #fff; padding: 6px 10px; border-radius: 6px; transform: skew(-8deg); font-size: 1.2rem; }
 .contact-btn {
-    background: var(--yellow-pill); color: #000; padding: 10px 25px; border-radius: 30px; 
-    font-weight: 700; text-decoration: none; transition: 0.3s; box-shadow: 0 4px 15px rgba(255, 234, 0, 0.2);
+    background: transparent; color: var(--neon-blue); border: 2px solid var(--neon-blue);
+    padding: 10px 25px; border-radius: 30px; font-weight: 700; text-decoration: none; 
+    transition: 0.3s; box-shadow: 0 0 15px var(--neon-glow); font-size: 0.95rem;
 }
-.contact-btn:hover { box-shadow: 0 0 20px rgba(255, 234, 0, 0.6); transform: translateY(-2px); }
+.contact-btn:hover { 
+    background: var(--neon-blue); color: #000; 
+    box-shadow: 0 0 30px var(--neon-blue); transform: scale(1.05); 
+}
 
 /* --- HOME PAGE HERO --- */
 .home-wrapper {
@@ -61,72 +65,51 @@ body { background-color: var(--bg-base); color: var(--text-main); overflow-x: hi
 /* --- INBOX PAGE --- */
 .inbox-wrapper { width: 100%; max-width: 800px; margin: 40px auto; padding: 0 20px; animation: fadeIn 0.6s ease-out; }
 
-/* 🪄 RESTORED EMAIL WIDGET (Matches your custom UI screenshot exactly) */
+/* 🪄 PREMIUM EMAIL WIDGET */
 .email-widget {
-    background: var(--bg-panel); 
-    border: 1px solid rgba(255, 255, 255, 0.03);
-    border-radius: 16px;
-    padding: 30px;
-    max-width: 600px;
-    margin: 0 auto 30px auto;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    background: var(--bg-panel); border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 16px;
+    padding: 30px; max-width: 600px; margin: 0 auto 30px auto; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 .widget-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 20px; color: var(--text-main); }
 .input-wrapper { background: var(--bg-base); border-radius: 14px; padding: 18px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.02); }
 .email-input { background: transparent; border: none; color: var(--text-main); width: 100%; text-align: center; font-size: 1.2rem; font-weight: 700; outline: none; letter-spacing: 0.5px;}
 
-/* 🪄 EXACT BUTTON MATCHES */
 .widget-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; max-width: 400px; margin: 0 auto; }
-
 .btn-qr { 
-    background: transparent; color: #fff; 
-    border: 1px solid rgba(0, 229, 255, 0.3); /* Hollow faint neon border */
-    padding: 16px 20px; border-radius: 14px; 
-    font-size: 1.1rem; font-weight: 700; cursor: pointer; 
+    background: transparent; color: #fff; border: 1px solid rgba(0, 229, 255, 0.3); 
+    padding: 16px 20px; border-radius: 14px; font-size: 1.1rem; font-weight: 700; cursor: pointer; 
     display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; 
 }
 .btn-qr:hover { background: rgba(0, 229, 255, 0.05); border-color: var(--neon-blue); }
-
 .btn-copy { 
-    background: var(--neon-blue); color: #000; /* Solid Cyan */
-    border: none; padding: 16px 20px; border-radius: 14px; 
-    font-size: 1.1rem; font-weight: 700; cursor: pointer; 
-    display: flex; align-items: center; justify-content: center; gap: 8px; 
-    transition: 0.2s; 
+    background: var(--neon-blue); color: #000; border: none; padding: 16px 20px; border-radius: 14px; 
+    font-size: 1.1rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; 
 }
 .btn-copy:hover { transform: translateY(-2px); box-shadow: 0 5px 20px var(--neon-glow); }
 
-.widget-subtext { 
-    text-align: center; color: var(--text-muted); font-size: 0.9rem; font-weight: 500;
-    max-width: 550px; margin: 0 auto 40px auto; line-height: 1.6; 
-}
+.widget-subtext { text-align: center; color: var(--text-muted); font-size: 0.9rem; font-weight: 500; max-width: 550px; margin: 0 auto 40px auto; line-height: 1.6; }
 
-/* Action Grid (Dim by default, Neon on hover/tap) */
-.action-grid {
-    display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 30px;
-    max-width: 500px; margin-left: auto; margin-right: auto;
-}
+/* 🪄 ACTION GRID */
+.action-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 30px; max-width: 500px; margin-left: auto; margin-right: auto; }
 .action-btn {
     background: var(--bg-panel); border: 1px solid var(--border-dim); color: var(--text-muted);
     padding: 20px 10px; border-radius: 16px; font-size: 1.1rem; font-weight: 600; cursor: pointer;
     display: flex; flex-direction: column; align-items: center; gap: 8px; transition: all 0.3s ease;
 }
 .action-btn i { font-size: 1.6rem; color: var(--text-muted); transition: 0.3s; }
-
 .action-btn:hover, .action-btn:active {
     background: var(--bg-glass); color: var(--neon-blue); border-color: var(--neon-blue);
     box-shadow: 0 0 25px var(--neon-glow); transform: translateY(-3px);
 }
 .action-btn:hover i, .action-btn:active i { color: var(--neon-blue); }
 
-/* Inbox Table */
+/* 🪄 INBOX TABLE */
 .inbox-box { background: var(--bg-panel); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 .inbox-title { background: #161922; padding: 18px 20px; font-weight: 800; font-size: 0.95rem; letter-spacing: 1px; display: flex; justify-content: space-between; align-items: center;}
 .email-badge { background: rgba(255,255,255,0.05); padding: 5px 12px; border-radius: 20px; font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
-.inbox-body { min-height: 250px; display: flex; flex-direction: column; justify-content: center; }
+.inbox-body { min-height: 250px; display: flex; flex-direction: column; justify-content: flex-start; } /* FIXED: Emails align to top! */
 
-/* INFINITE SPINNING ENVELOPE */
+/* 🪄 INFINITE SPINNING ENVELOPE */
 .empty-state { margin: auto; text-align: center; padding: 40px 20px; color: var(--text-muted); }
 .spin-container { position: relative; width: 70px; height: 70px; margin: 0 auto 20px auto; display: flex; align-items: center; justify-content: center; }
 .spin-container i.fa-envelope { font-size: 2rem; color: #3a3f55; position: absolute; z-index: 2; }
@@ -135,42 +118,30 @@ body { background-color: var(--bg-base); color: var(--text-main); overflow-x: hi
     border: 3px solid transparent; border-top: 3px solid var(--text-muted); border-right: 3px solid var(--text-muted);
     border-radius: 50%; animation: infiniteSpin 1.5s linear infinite; opacity: 0.5; z-index: 1;
 }
-
 .empty-state h3 { color: var(--text-main); font-size: 1.3rem; margin-bottom: 5px; font-weight: 700; }
 .empty-state p { font-size: 0.95rem; font-weight: 500;}
 
-/* Messages */
-.message-row { padding: 18px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; gap: 5px; cursor: pointer; transition: 0.2s; }
+/* 🪄 INCOMING MESSAGES (Matches Screenshot perfectly) */
+.message-row { 
+    padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); 
+    display: flex; justify-content: space-between; align-items: center; 
+    cursor: pointer; transition: 0.2s; background: var(--bg-panel);
+}
 .message-row:hover { background: var(--bg-glass); border-left: 3px solid var(--neon-blue); }
+.msg-left { display: flex; gap: 15px; align-items: flex-start; }
+.msg-dot { width: 10px; height: 10px; background: var(--primary-green); border-radius: 50%; margin-top: 6px; box-shadow: 0 0 10px rgba(0,217,139,0.5); }
+.msg-content { display: flex; flex-direction: column; gap: 4px; text-align: left; }
 .msg-sender { font-weight: 700; color: var(--text-main); font-size: 1rem; }
-.msg-subject { color: var(--text-muted); font-size: 0.9rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.msg-email { color: var(--text-muted); font-size: 0.85rem; font-weight: 500;}
+.msg-subject { color: var(--text-main); font-size: 0.95rem; font-weight: 500; margin-top: 4px; }
+.msg-arrow { color: var(--text-muted); font-size: 1.2rem; }
 
-/* --- SEO ARTICLE --- */
-.seo-article { max-width: 800px; margin: 60px auto; text-align: center; padding: 0 20px 50px 20px; }
-.seo-article h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 20px; color: var(--text-main); }
-.seo-article p { color: var(--text-muted); font-size: 1rem; font-weight: 500; line-height: 1.7; }
-
-@media (max-width: 600px) {
-    .home-hero h1 { font-size: 3.5rem; }
-}
-
-/* --- UPDATED HEADER BUTTON (Matches Home Page) --- */
-.contact-btn {
-    background: transparent; color: var(--neon-blue); border: 2px solid var(--neon-blue);
-    padding: 10px 25px; border-radius: 30px; font-weight: 700; text-decoration: none; 
-    transition: 0.3s; box-shadow: 0 0 15px var(--neon-glow); font-size: 0.95rem;
-}
-.contact-btn:hover { 
-    background: var(--neon-blue); color: #000; 
-    box-shadow: 0 0 30px var(--neon-blue); transform: scale(1.05); 
-}
-
-/* --- QR CODE MODAL (Incredible Animation) --- */
+/* 🪄 QR CODE MODAL */
 .qr-modal {
     display: none; position: fixed; z-index: 1000; left: 0; top: 0; 
     width: 100%; height: 100%; background-color: rgba(3, 3, 5, 0.8); 
     backdrop-filter: blur(8px); justify-content: center; align-items: center;
-    opacity: 0; transition: opacity 0.3s ease;
+    opacity: 0; transition: opacity 0.3s ease; padding: 20px;
 }
 .qr-modal.show { display: flex; opacity: 1; }
 .qr-content {
@@ -180,34 +151,13 @@ body { background-color: var(--bg-base); color: var(--text-main); overflow-x: hi
     transform: scale(0.7); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 .qr-modal.show .qr-content { transform: scale(1); }
-.close-qr {
-    position: absolute; top: 15px; right: 20px; color: var(--text-muted); 
-    font-size: 2rem; cursor: pointer; transition: 0.2s;
-}
+.close-qr { position: absolute; top: 15px; right: 20px; color: var(--text-muted); font-size: 2rem; cursor: pointer; transition: 0.2s; }
 .close-qr:hover { color: var(--neon-blue); transform: rotate(90deg); }
-.qr-image-wrapper {
-    background: #fff; padding: 15px; border-radius: 10px; margin: 20px auto; 
-    display: inline-block; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-}
+.qr-image-wrapper { background: #fff; padding: 15px; border-radius: 10px; margin: 20px auto; display: inline-block; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
 .qr-content h3 { color: var(--text-main); font-size: 1.5rem; }
 .qr-content p { color: var(--text-muted); font-size: 0.9rem; margin-top: 10px; }
 
-/* --- INBOX ROW STYLING (Matches Screenshot) --- */
-.message-row { 
-    padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); 
-    display: flex; justify-content: space-between; align-items: center; 
-    cursor: pointer; transition: 0.2s; background: var(--bg-panel);
-}
-.message-row:hover { background: var(--bg-glass); }
-.msg-left { display: flex; gap: 15px; align-items: flex-start; }
-.msg-dot { width: 10px; height: 10px; background: var(--primary-green); border-radius: 50%; margin-top: 6px; box-shadow: 0 0 10px rgba(0,217,139,0.5); }
-.msg-content { display: flex; flex-direction: column; gap: 4px; text-align: left; }
-.msg-sender { font-weight: 600; color: var(--text-main); font-size: 1rem; }
-.msg-email { color: var(--text-muted); font-size: 0.85rem; }
-.msg-subject { color: var(--text-main); font-size: 0.95rem; font-weight: 500; margin-top: 4px; }
-.msg-arrow { color: var(--text-muted); font-size: 1.2rem; }
-
-/* --- EMAIL READER MODAL --- */
+/* 🪄 EMAIL READER MODAL */
 .email-modal {
     display: none; position: fixed; z-index: 1000; left: 0; top: 0; 
     width: 100%; height: 100%; background-color: rgba(3, 3, 5, 0.8); 
@@ -223,12 +173,19 @@ body { background-color: var(--bg-base); color: var(--text-main); overflow-x: hi
     transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 .email-modal.show .email-content { transform: scale(1); }
-.close-email {
-    position: absolute; top: 20px; right: 25px; color: var(--text-muted); 
-    font-size: 2rem; cursor: pointer; transition: 0.2s;
-}
+.close-email { position: absolute; top: 20px; right: 25px; color: var(--text-muted); font-size: 2rem; cursor: pointer; transition: 0.2s; }
 .close-email:hover { color: var(--neon-blue); transform: rotate(90deg); }
 .reader-header { border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 20px; margin-bottom: 20px; }
 .reader-subject { font-size: 1.4rem; font-weight: 700; color: var(--text-main); margin-bottom: 10px; padding-right: 30px;}
 .reader-sender { font-size: 0.95rem; color: var(--primary-green); font-weight: 600; }
-.reader-body { font-size: 1rem; color: var(--text-muted); line-height: 1.6; white-space: pre-wrap; }
+.reader-body { font-size: 1rem; color: var(--text-muted); line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
+
+/* --- SEO ARTICLE --- */
+.seo-article { max-width: 800px; margin: 60px auto; text-align: center; padding: 0 20px 50px 20px; }
+.seo-article h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 20px; color: var(--text-main); }
+.seo-article p { color: var(--text-muted); font-size: 1rem; font-weight: 500; line-height: 1.7; }
+
+@media (max-width: 600px) {
+    .home-hero h1 { font-size: 3.5rem; }
+    .action-grid { grid-template-columns: repeat(2, 1fr); }
+                    }
