@@ -1,5 +1,26 @@
 function preventReload(e) { if (e) e.preventDefault(); }
 
+// 🪄 ENGINE: Splits "Bittu Khan <email@gmail.com>" into pure Name and Email
+function parseSender(senderString) {
+    let name = senderString;
+    let email = senderString;
+    const match = senderString.match(/(.*)<(.*)>/);
+    if(match) {
+        name = match[1].replace(/"/g, '').trim() || match[2].trim();
+        email = match[2].trim();
+    }
+    return { name, email };
+}
+
+// 🪄 ENGINE: Deletes ugly artifacts like ;charset="UTF-8"
+function cleanEmailBody(text) {
+    if (!text) return "";
+    return text.replace(/;?\s*charset=["']?(UTF-8|iso-8859-1)["']?/gi, '')
+               .replace(/Content-Type:.*$/gmi, '')
+               .replace(/Content-Transfer-Encoding:.*$/gmi, '')
+               .trim();
+}
+
 async function changeEmail(e) {
     preventReload(e);
     const btn = e.currentTarget;
@@ -95,9 +116,11 @@ async function fetchEmails(e) {
         emptyState.style.display = 'none';
         
         let newHTML = '';
-        // 🪄 THE FIX: We now generate a direct URL to the new read page!
         messages.reverse().forEach((msg, index) => {
-            const safeSender = msg.sender.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            // 🪄 NEW PARSING: Splits Name and Email for the Inbox List
+            const parsed = parseSender(msg.sender);
+            const safeName = parsed.name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            const safeEmail = parsed.email.replace(/</g, "&lt;").replace(/>/g, "&gt;");
             const safeSubject = msg.subject.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
             newHTML += `
@@ -105,8 +128,8 @@ async function fetchEmails(e) {
                     <div class="msg-left">
                         <div class="msg-dot"></div>
                         <div class="msg-content">
-                            <div class="msg-sender">${safeSender}</div>
-                            <div class="msg-email">${emailAddress}</div>
+                            <div class="msg-sender">${safeName}</div>
+                            <div class="msg-email">${safeEmail}</div>
                             <div class="msg-subject">${safeSubject}</div>
                         </div>
                     </div>
@@ -123,13 +146,11 @@ async function fetchEmails(e) {
     }
 }
 
-// 🪄 LOGIC FOR THE NEW READ PAGE
 async function loadReadPage() {
     const urlParts = window.location.pathname.split('/');
     const index = parseInt(urlParts.pop());
     const emailAddress = urlParts.pop();
 
-    document.getElementById('current-email-display').innerText = emailAddress;
     document.getElementById('backBtn').href = `/inbox/${emailAddress}`;
 
     try {
@@ -139,10 +160,33 @@ async function loadReadPage() {
         const msg = reversedMessages[index];
 
         if(msg) {
-            document.getElementById('readSender').innerText = msg.sender;
-            document.getElementById('readTo').innerText = `To: ${emailAddress}`;
+            // Parse data
+            const parsed = parseSender(msg.sender);
+            document.getElementById('readSenderName').innerText = parsed.name;
+            document.getElementById('readSenderEmail').innerText = parsed.email;
+            
+            // 🪄 Generate Avatar Initials
+            let initials = "NA";
+            if (parsed.name) {
+                const words = parsed.name.split(' ');
+                if (words.length >= 2) {
+                    initials = (words[0][0] + words[1][0]).toUpperCase();
+                } else {
+                    initials = parsed.name.substring(0, 2).toUpperCase();
+                }
+            }
+            document.getElementById('readAvatar').innerText = initials;
+
+            // Generate Timestamp
+            const now = new Date();
+            const pad = (n) => n.toString().padStart(2, '0');
+            const dateString = `${pad(now.getDate())}-${pad(now.getMonth()+1)}-${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+            
+            document.getElementById('readDate').innerText = dateString;
             document.getElementById('readSubject').innerText = msg.subject || "No Subject";
-            document.getElementById('readBody').innerText = msg.text || "No Content";
+            
+            // 🪄 Inject cleaned body text!
+            document.getElementById('readBody').innerText = cleanEmailBody(msg.text) || "No Content";
         } else {
             document.getElementById('readBody').innerText = "Email not found.";
         }
@@ -151,7 +195,6 @@ async function loadReadPage() {
     }
 }
 
-// ROUTER 
 if (window.location.pathname.startsWith('/inbox/')) {
     fetchEmails();
     setInterval(() => fetchEmails(), 4000); 
