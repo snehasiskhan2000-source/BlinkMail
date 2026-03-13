@@ -1,3 +1,5 @@
+let currentMessages = []; // 🪄 Securely holds email data to prevent newline crashes
+
 function preventReload(e) { if (e) e.preventDefault(); }
 
 async function changeEmail(e) {
@@ -63,11 +65,18 @@ function showQR(e) {
 }
 function closeQR() { document.getElementById('qrModal').classList.remove('show'); }
 
-// 🪄 EMAIL READER MODAL LOGIC
-function openEmail(sender, subject, body) {
-    document.getElementById('readerSender').innerText = sender;
-    document.getElementById('readerSubject').innerText = subject;
-    document.getElementById('readerBody').innerText = body;
+// 🪄 FLAWLESS EMAIL READER MODAL LOGIC
+function openEmail(index) {
+    const msg = currentMessages[index]; // Fetch directly from secure memory!
+    
+    // Clean tags so HTML doesn't break
+    const cleanSender = msg.sender.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    const cleanSubject = msg.subject.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    
+    document.getElementById('readerSender').innerText = cleanSender;
+    document.getElementById('readerSubject').innerText = cleanSubject || "No Subject";
+    document.getElementById('readerBody').innerText = msg.text || "No Content";
+    
     document.getElementById('emailModal').classList.add('show');
 }
 function closeEmail() { document.getElementById('emailModal').classList.remove('show'); }
@@ -103,23 +112,24 @@ async function fetchEmails(e) {
         }
 
         emptyState.style.display = 'none';
-        let newHTML = '';
         
-        // 🪄 FORMATTED EXACTLY LIKE SCREENSHOT (Green Dot, Sender, Email, Subject, Arrow)
-        messages.reverse().forEach(msg => {
-            // Escape quotes to prevent HTML breaking
-            const safeSender = msg.sender.replace(/"/g, '&quot;');
-            const safeSubject = msg.subject.replace(/"/g, '&quot;');
-            const safeBody = msg.text.replace(/"/g, '&quot;');
-            
+        // Save to global array for the modal
+        currentMessages = messages.reverse(); 
+        
+        let newHTML = '';
+        currentMessages.forEach((msg, index) => {
+            // Clean up sender for the preview list
+            const cleanSender = msg.sender.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            const cleanSubject = msg.subject.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
             newHTML += `
-                <div class="message-row" onclick="openEmail('${safeSender}', '${safeSubject}', '${safeBody}')">
+                <div class="message-row" onclick="openEmail(${index})">
                     <div class="msg-left">
                         <div class="msg-dot"></div>
                         <div class="msg-content">
-                            <div class="msg-sender">${msg.sender}</div>
+                            <div class="msg-sender">${cleanSender}</div>
                             <div class="msg-email">${emailAddress}</div>
-                            <div class="msg-subject">${msg.subject}</div>
+                            <div class="msg-subject">${cleanSubject}</div>
                         </div>
                     </div>
                     <div class="msg-arrow"><i class="fa-solid fa-angle-right"></i></div>
