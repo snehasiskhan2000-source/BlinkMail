@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Read Email | BlinkMail</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/static/style.css?v=redirect">
+    <link rel="stylesheet" href="/static/style.css?v=ultramax">
 </head>
 <body>
     <div class="top-navbar">
@@ -17,27 +17,36 @@
     </div>
 
     <div class="inbox-wrapper">
-        <a href="#" id="backBtn" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Back to Inbox</a>
-
         <div class="inbox-box">
-            <div class="inbox-title">
-                MESSAGE READER <span class="email-badge" id="current-email-display">Loading...</span>
-            </div>
+            <a href="#" id="backBtn" class="btn-back-header"><i class="fa-solid fa-angle-left"></i> BACK TO LIST</a>
             
             <div class="inbox-body" style="min-height: auto;">
-                <div class="read-header">
-                    <div class="read-subject" id="readSubject">Loading Subject...</div>
-                    <div class="read-meta">
-                        <div class="read-sender" id="readSender">Loading Sender...</div>
-                        <div class="read-to" id="readTo">To: Loading...</div>
+                
+                <div class="read-header-top">
+                    <div class="profile-avatar" id="readAvatar">BK</div>
+                    <div class="read-sender-info">
+                        <div class="read-name" id="readSenderName">Loading...</div>
+                        <div class="read-email-address" id="readSenderEmail">Loading...</div>
                     </div>
                 </div>
+
+                <div class="read-info-row">
+                    <span class="read-info-label">Date:</span> 
+                    <span class="read-info-value" id="readDate" style="font-weight: 400;">Loading...</span>
+                </div>
+
+                <div class="read-info-row">
+                    <span class="read-info-label">Subject:</span> 
+                    <span class="read-info-value" id="readSubject">Loading...</span>
+                </div>
+
                 <div class="read-body" id="readBody">
                     <div style="text-align:center; padding: 40px;"><i class="fa-solid fa-circle-notch fa-spin fa-2x"></i></div>
                 </div>
+
             </div>
         </div>
     </div>
-    <script src="/static/script.js?v=redirect"></script>
+    <script src="/static/script.js?v=ultramax"></script>
 </body>
 </html>
