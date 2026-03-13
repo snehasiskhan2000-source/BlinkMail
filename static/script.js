@@ -1,24 +1,65 @@
+let emailFetchInterval; // Global variable so we can stop it when it expires!
+
 function preventReload(e) { if (e) e.preventDefault(); }
 
-// 🪄 ENGINE: Splits "Bittu Khan <email@gmail.com>" into pure Name and Email
+// 🪄 ENGINE: Smart Name Extractor
 function parseSender(senderString) {
     let name = senderString;
     let email = senderString;
     const match = senderString.match(/(.*)<(.*)>/);
     if(match) {
-        name = match[1].replace(/"/g, '').trim() || match[2].trim();
+        name = match[1].replace(/"/g, '').trim();
         email = match[2].trim();
+        if (!name) name = email.split('@')[0]; 
+    } else if (senderString.includes('@')) {
+        email = senderString.trim();
+        name = email.split('@')[0];
     }
+    if (name) name = name.charAt(0).toUpperCase() + name.slice(1);
     return { name, email };
 }
 
-// 🪄 ENGINE: Deletes ugly artifacts like ;charset="UTF-8"
 function cleanEmailBody(text) {
     if (!text) return "";
     return text.replace(/;?\s*charset=["']?(UTF-8|iso-8859-1)["']?/gi, '')
                .replace(/Content-Type:.*$/gmi, '')
                .replace(/Content-Transfer-Encoding:.*$/gmi, '')
                .trim();
+}
+
+// 🪄 ENGINE: The 10-Minute Self Destruct Logic
+function startSelfDestructTimer(emailAddress) {
+    const expiryKey = `blinkmail_expiry_${emailAddress}`;
+    let expiryTime = localStorage.getItem(expiryKey);
+    
+    // If it's a brand new email, set the death clock to 10 minutes from exactly now
+    if (!expiryTime) {
+        expiryTime = Date.now() + 10 * 60 * 1000;
+        localStorage.setItem(expiryKey, expiryTime);
+    }
+
+    const timerDisplay = document.getElementById('emailTimer');
+    
+    const countdown = setInterval(() => {
+        const now = Date.now();
+        const distance = expiryTime - now;
+
+        if (distance <= 0) {
+            // TIME IS UP. KILL IT.
+            clearInterval(countdown);
+            clearInterval(emailFetchInterval); // Stop fetching emails from backend
+            if (timerDisplay) timerDisplay.innerText = "00:00";
+            document.getElementById('expiredModal').classList.add('show');
+            localStorage.removeItem(expiryKey); // Clean up memory
+        } else {
+            // Math for minutes and seconds
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            if (timerDisplay) {
+                timerDisplay.innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+        }
+    }, 1000);
 }
 
 async function changeEmail(e) {
@@ -117,7 +158,6 @@ async function fetchEmails(e) {
         
         let newHTML = '';
         messages.reverse().forEach((msg, index) => {
-            // 🪄 NEW PARSING: Splits Name and Email for the Inbox List
             const parsed = parseSender(msg.sender);
             const safeName = parsed.name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
             const safeEmail = parsed.email.replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -160,16 +200,14 @@ async function loadReadPage() {
         const msg = reversedMessages[index];
 
         if(msg) {
-            // Parse data
             const parsed = parseSender(msg.sender);
             document.getElementById('readSenderName').innerText = parsed.name;
             document.getElementById('readSenderEmail').innerText = parsed.email;
             
-            // 🪄 Generate Avatar Initials
             let initials = "NA";
             if (parsed.name) {
-                const words = parsed.name.split(' ');
-                if (words.length >= 2) {
+                const words = parsed.name.split(/[\s\._-]+/); 
+                if (words.length >= 2 && words[1].length > 0) {
                     initials = (words[0][0] + words[1][0]).toUpperCase();
                 } else {
                     initials = parsed.name.substring(0, 2).toUpperCase();
@@ -177,15 +215,12 @@ async function loadReadPage() {
             }
             document.getElementById('readAvatar').innerText = initials;
 
-            // Generate Timestamp
             const now = new Date();
             const pad = (n) => n.toString().padStart(2, '0');
             const dateString = `${pad(now.getDate())}-${pad(now.getMonth()+1)}-${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
             
             document.getElementById('readDate').innerText = dateString;
             document.getElementById('readSubject').innerText = msg.subject || "No Subject";
-            
-            // 🪄 Inject cleaned body text!
             document.getElementById('readBody').innerText = cleanEmailBody(msg.text) || "No Content";
         } else {
             document.getElementById('readBody').innerText = "Email not found.";
@@ -195,9 +230,19 @@ async function loadReadPage() {
     }
 }
 
+// 🪄 INIT LOGIC
 if (window.location.pathname.startsWith('/inbox/')) {
+    const urlParts = window.location.pathname.split('/');
+    const emailAddress = urlParts[urlParts.length - 1];
+    
+    // Kick off the countdown!
+    if (emailAddress && emailAddress.includes('@')) {
+        startSelfDestructTimer(emailAddress);
+    }
+    
     fetchEmails();
-    setInterval(() => fetchEmails(), 4000); 
+    emailFetchInterval = setInterval(() => fetchEmails(), 4000); 
+
 } else if (window.location.pathname.startsWith('/read/')) {
     loadReadPage();
 }
