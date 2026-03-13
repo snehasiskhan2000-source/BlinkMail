@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Inbox | BlinkMail</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/static/style.css?v=redirect">
+    <link rel="stylesheet" href="/static/style.css?v=timer">
 </head>
 <body>
     <div class="top-navbar">
@@ -27,12 +27,28 @@
         </div>
     </div>
 
+    <div id="expiredModal" class="qr-modal" style="backdrop-filter: blur(15px);">
+        <div class="expired-content">
+            <i class="fa-solid fa-hourglass-end expired-icon"></i>
+            <h3 style="color: #fff; font-size: 1.8rem; margin-bottom: 10px;">Email Expired</h3>
+            <p style="color: var(--text-muted); margin-bottom: 30px; font-weight: 500;">This temporary inbox has self-destructed and all messages have been securely wiped.</p>
+            <button class="btn-danger" onclick="generateAndRedirect()">
+                Generate New Email <i class="fa-solid fa-bolt"></i>
+            </button>
+        </div>
+    </div>
+
     <div class="inbox-wrapper">
         <div class="email-widget">
             <h2 class="widget-title">Your Temporary Email Address</h2>
-            <div class="input-wrapper">
+            <div class="input-wrapper" style="margin-bottom: 15px;">
                 <input type="text" id="current-email-input" class="email-input" readonly value="Loading...">
             </div>
+            
+            <div class="timer-badge">
+                <i class="fa-solid fa-stopwatch"></i> <span id="emailTimer">10:00</span>
+            </div>
+
             <div class="widget-buttons">
                 <button class="btn-qr" onclick="showQR(event)"><i class="fa-solid fa-qrcode"></i> QR code</button>
                 <button class="btn-copy" id="widgetCopyBtn" onclick="copyEmail(event)"><i class="fa-regular fa-copy"></i> Copy</button>
@@ -64,6 +80,6 @@
             </div>
         </div>
     </div>
-    <script src="/static/script.js?v=ultramax"></script>
+    <script src="/static/script.js?v=timer"></script>
 </body>
 </html>
